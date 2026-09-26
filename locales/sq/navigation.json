@@ -1,0 +1,28 @@
+{
+  "home": "Ballina",
+  "about": "Rreth Nesh",
+  "services": "Shërbime",
+  "projects": "Projekte",
+  "blog": "Blog",
+  "contact": "Kontakt",
+  "startProject": "Fillo një Projekt",
+  "language": "Gjuha",
+  "languages": { "en": "Anglisht", "sq": "Shqip" },
+  "menu": "Menu",
+  "close": "Mbyll",
+  "servicesMenu": {
+    "title": "Shërbimet Tona",
+    "subtitle": "Çdo gjë që ju nevojitet për të ndërtuar dhe rritur prezencën tuaj dixhitale.",
+    "webDesign": "Dizajn Web",
+    "fullstack": "Zhvillim Full-Stack",
+    "ecommerce": "E-Commerce",
+    "webApps": "Aplikacione Web",
+    "uiUx": "Dizajn UI/UX",
+    "backend": "Backend dhe API",
+    "database": "Bazë të Dhënash dhe Infrastrukturë",
+    "seo": "SEO dhe Performancë",
+    "ai": "AI dhe Automatizim",
+    "security": "Siguri",
+    "maintenance": "Mirëmbajtje dhe Mbështetje"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "badge": "About Velvante Solutions",
+    "headline": "We Are a Technology Company That Takes Engineering Seriously.",
+    "subheadline": "Founded with the belief that most businesses deserve better digital systems — we set out to build them."
+  },
+  "mission": {
+    "badge": "Our Mission",
+    "headline": "To engineer digital systems that give businesses a genuine competitive advantage.",
+    "description": "We believe that great technology should be accessible to ambitious businesses of all sizes — not just enterprise giants. Every project we take on is an opportunity to level the playing field."
+  },
+  "vision": {
+    "badge": "Our Vision",
+    "headline": "A world where every business operates on a digital foundation worthy of its ambition.",
+    "description": "We envision a future where digital infrastructure is built with absolute engineering integrity, giving ambitious companies standard-setting reliability and performance."
+  },
+  "values": {
+    "badge": "Our Values",
+    "headline": "The Principles That Guide Our Work.",
+    "items": [
+      { "title": "Precision", "description": "We are meticulous in everything we build. No shortcuts, no compromises." },
+      { "title": "Innovation", "description": "We stay at the forefront of technology so our clients always have access to the best solutions." },
+      { "title": "Transparency", "description": "We communicate openly at every stage. No surprises, no hidden costs." },
+      { "title": "Performance", "description": "We measure success by results, not deliverables." },
+      { "title": "Reliability", "description": "We commit to deadlines and we deliver on them." },
+      { "title": "Partnership", "description": "We are invested in your long-term success, not just the initial project." }
+    ]
+  },
+  "team": {
+    "badge": "Our Team",
+    "headline": "The People Behind Velvante Solutions.",
+    "subheadline": "The technical leadership and engineering vision behind every digital solution we build."
+  },
+  "cta": {
+    "headline": "Work With a Team That Cares.",
+    "subheadline": "Every project at Velvante Solutions receives senior attention from discovery through delivery.",
+    "primary": "Start a Project",
+    "secondary": "View Our Work"
+  }
+}
+

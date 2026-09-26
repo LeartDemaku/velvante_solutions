@@ -1,0 +1,393 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified DateTime?
+  password      String
+  role          String    @default("EDITOR")
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  @@index([email])
+  @@map("users")
+}
+
+model Service {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  icon        String
+  order       Int       @default(0)
+  published   Boolean   @default(false)
+  featured    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  translations ServiceTranslation[]
+  projects     ProjectService[]
+
+  @@index([slug])
+  @@index([published])
+  @@map("services")
+}
+
+model ServiceTranslation {
+  id           String   @id @default(cuid())
+  serviceId    String
+  locale       String
+  title        String
+  shortDesc    String
+  description  String
+  capabilities Json     @default("[]")
+  technologies Json     @default("[]")
+  deliverables Json     @default("[]")
+  benefits     Json     @default("[]")
+  metaTitle    String
+  metaDesc     String
+
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@unique([serviceId, locale])
+  @@index([locale])
+  @@map("service_translations")
+}
+
+model ProjectCategory {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  nameAl    String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  projects Project[]
+
+  @@map("project_categories")
+}
+
+model Project {
+  id           String    @id @default(cuid())
+  slug         String    @unique
+  categoryId   String
+  coverImage   String
+  images       Json      @default("[]")
+  technologies Json      @default("[]")
+  featured     Boolean   @default(false)
+  published    Boolean   @default(false)
+  year         Int
+  order        Int       @default(0)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime?
+
+  category     ProjectCategory      @relation(fields: [categoryId], references: [id])
+  translations ProjectTranslation[]
+  services     ProjectService[]
+
+  @@index([slug])
+  @@index([published, featured])
+  @@index([categoryId])
+  @@map("projects")
+}
+
+model ProjectTranslation {
+  id        String @id @default(cuid())
+  projectId String
+  locale    String
+  title     String
+  client    String
+  industry  String
+  tagline   String
+  challenge String
+  solution  String
+  results   String
+  metaTitle String
+  metaDesc  String
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, locale])
+  @@index([locale])
+  @@map("project_translations")
+}
+
+model ProjectService {
+  projectId String
+  serviceId String
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, serviceId])
+  @@map("project_services")
+}
+
+model BlogCategory {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  nameAl    String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  posts BlogPost[]
+
+  @@map("blog_categories")
+}
+
+model BlogTag {
+  id     String @id @default(cuid())
+  slug   String @unique
+  name   String
+  nameAl String
+
+  posts BlogPostTag[]
+
+  @@map("blog_tags")
+}
+
+model Author {
+  id        String   @id @default(cuid())
+  name      String
+  bio       String
+  bioAl     String
+  image     String
+  role      String
+  roleAl    String
+  linkedin  String?
+  twitter   String?
+  createdAt DateTime @default(now())
+
+  posts BlogPost[]
+
+  @@map("authors")
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  authorId    String
+  categoryId  String
+  coverImage  String
+  status      String    @default("DRAFT")
+  featured    Boolean   @default(false)
+  publishedAt DateTime?
+  readingTime Int       @default(5)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  author       Author            @relation(fields: [authorId], references: [id])
+  category     BlogCategory      @relation(fields: [categoryId], references: [id])
+  translations BlogTranslation[]
+  tags         BlogPostTag[]
+
+  @@index([slug])
+  @@index([status, publishedAt])
+  @@index([authorId])
+  @@index([categoryId])
+  @@map("blog_posts")
+}
+
+model BlogTranslation {
+  id        String  @id @default(cuid())
+  postId    String
+  locale    String
+  title     String
+  excerpt   String
+  content   String
+  metaTitle String
+  metaDesc  String
+  ogImage   String?
+
+  post BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, locale])
+  @@index([locale])
+  @@map("blog_translations")
+}
+
+model BlogPostTag {
+  postId String
+  tagId  String
+
+  post BlogPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag  BlogTag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+  @@map("blog_post_tags")
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  company   String
+  image     String?
+  rating    Int      @default(5)
+  featured  Boolean  @default(false)
+  published Boolean  @default(false)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  translations TestimonialTranslation[]
+
+  @@index([published, featured])
+  @@map("testimonials")
+}
+
+model TestimonialTranslation {
+  id            String @id @default(cuid())
+  testimonialId String
+  locale        String
+  quote         String
+
+  testimonial Testimonial @relation(fields: [testimonialId], references: [id], onDelete: Cascade)
+
+  @@unique([testimonialId, locale])
+  @@map("testimonial_translations")
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  company   String?
+  email     String
+  phone     String?
+  service   String?
+  message   String
+  status    String   @default("NEW")
+  ipAddress String?
+  userAgent String?
+  locale    String   @default("en")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("contact_submissions")
+}
+
+model ProjectInquiry {
+  id            String   @id @default(cuid())
+  firstName     String
+  lastName      String
+  email         String
+  phone         String?
+  company       String?
+  website       String?
+  projectType   String
+  services      Json     @default("[]")
+  budgetMin     Int?
+  budgetMax     Int?
+  timeline      String?
+  description   String
+  goals         String?
+  attachmentUrl String?
+  status        String   @default("NEW")
+  locale        String   @default("en")
+  ipAddress     String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@map("project_inquiries")
+}
+model NewsletterSubscriber {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  locale         String    @default("en")
+  confirmed      Boolean   @default(false)
+  confirmedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  unsubscribedAt DateTime?
+
+  @@index([email])
+  @@index([confirmed])
+  @@map("newsletter_subscribers")
+}
+
+model MediaAsset {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  url          String
+  alt          String   @default("")
+  width        Int?
+  height       Int?
+  uploadedBy   String?
+  createdAt    DateTime @default(now())
+
+  @@index([mimeType])
+  @@index([createdAt])
+  @@map("media_assets")
+}
+
+model AnalyticsEvent {
+  id         String   @id @default(cuid())
+  event      String
+  page       String?
+  locale     String?
+  properties Json?
+  sessionId  String?
+  createdAt  DateTime @default(now())
+
+  @@index([event])
+  @@index([createdAt])
+  @@map("analytics_events")
+}
+
+model CookieConsent {
+  id        String   @id @default(cuid())
+  sessionId String   @unique
+  essential Boolean  @default(true)
+  analytics Boolean  @default(false)
+  marketing Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("cookie_consents")
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  name      String
+  image     String?
+  linkedin  String?
+  github    String?
+  order     Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  translations TeamMemberTranslation[]
+
+  @@map("team_members")
+}
+
+model TeamMemberTranslation {
+  id       String @id @default(cuid())
+  memberId String
+  locale   String
+  role     String
+  bio      String
+
+  member TeamMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([memberId, locale])
+  @@map("team_member_translations")
+}

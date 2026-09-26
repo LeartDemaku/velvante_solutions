@@ -1,0 +1,28 @@
+{
+  "hero": {
+    "badge": "Puna Jonë",
+    "headline": "Projekte të Ndërtuara për të Performuar.",
+    "subheadline": "Një zgjedhje e kuruar e produkteve dhe sistemeve dixhitale që kemi inxhinieruar për klientë nëpër industri."
+  },
+  "filters": {
+    "all": "Të Gjitha",
+    "websites": "Faqe Interneti",
+    "ecommerce": "E-Commerce",
+    "webApps": "Aplikacione Web",
+    "software": "Softuer i Personalizuar"
+  },
+  "caseStudy": {
+    "client": "Klienti",
+    "industry": "Industria",
+    "technologies": "Teknologjitë",
+    "challenge": "Sfida",
+    "solution": "Zgjidhja",
+    "results": "Rezultatet",
+    "nextProject": "Projekti Tjetër",
+    "prevProject": "Projekti i Mëparshëm"
+  },
+  "empty": {
+    "title": "Nuk u gjetën projekte",
+    "description": "Asnjë projekt nuk përputhet me filtrat tuaj aktualë. Provoni të zgjidhni një kategori tjetër."
+  }
+}

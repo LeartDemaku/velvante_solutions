@@ -1,0 +1,17 @@
+{
+  "hero": {
+    "badge": "Services",
+    "headline": "Full-Service Digital Engineering.",
+    "subheadline": "From strategy and design to development and infrastructure — we handle your complete digital stack."
+  },
+  "overview": {
+    "badge": "What We Offer",
+    "headline": "Every capability you need, under one roof.",
+    "subheadline": "We are a multidisciplinary team with deep expertise across every layer of modern digital systems."
+  },
+  "cta": {
+    "headline": "Have a Project in Mind?",
+    "subheadline": "Tell us what you need and we'll show you how we can help.",
+    "primary": "Start a Project"
+  }
+}

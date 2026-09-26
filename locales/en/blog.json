@@ -1,0 +1,30 @@
+{
+  "hero": {
+    "badge": "Blog",
+    "headline": "Insights & Perspectives.",
+    "subheadline": "Practical knowledge on web development, design, SEO, and digital strategy from the Velvante Solutions team."
+  },
+  "filters": {
+    "all": "All Articles",
+    "search": "Search articles...",
+    "noResults": "No articles found for your search."
+  },
+  "article": {
+    "readingTime": "{minutes} min read",
+    "publishedOn": "Published on",
+    "by": "By",
+    "share": "Share this article",
+    "tableOfContents": "Table of Contents",
+    "relatedArticles": "Related Articles",
+    "tags": "Tags"
+  },
+  "newsletter": {
+    "title": "Get articles in your inbox",
+    "description": "Monthly digest of our best content. No spam, ever."
+  },
+  "empty": {
+    "title": "No articles yet",
+    "description": "We're working on some great content. Check back soon."
+  }
+}
+

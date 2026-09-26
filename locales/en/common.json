@@ -1,0 +1,70 @@
+{
+  "brand": {
+    "name": "Velvante Solutions",
+    "tagline": "We Build Digital Systems That Move Businesses Forward.",
+    "shortTagline": "Digital Experiences & Full-Stack Solutions",
+    "description": "Velvante Solutions is a premium technology and digital solutions company. We design, build, and scale digital experiences that move businesses forward."
+  },
+  "cta": {
+    "startProject": "Start a Project",
+    "exploreWork": "Explore Our Work",
+    "learnMore": "Learn More",
+    "getInTouch": "Get in Touch",
+    "viewAll": "View All",
+    "readMore": "Read More",
+    "viewProject": "View Project",
+    "viewCaseStudy": "View Case Study",
+    "downloadPdf": "Download PDF",
+    "scheduleCall": "Schedule a Call",
+    "subscribe": "Subscribe",
+    "send": "Send Message",
+    "submit": "Submit",
+    "next": "Next",
+    "back": "Back",
+    "finish": "Submit Request",
+    "backToHome": "Back to Home",
+    "seeAllProjects": "See All Projects",
+    "seeAllPosts": "See All Articles",
+    "seeAllServices": "See All Services"
+  },
+  "status": {
+    "loading": "Loading...",
+    "sending": "Sending...",
+    "saving": "Saving...",
+    "submitting": "Submitting..."
+  },
+  "aria": {
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu",
+    "toggleLanguage": "Switch language",
+    "scrollToTop": "Scroll to top",
+    "searchOpen": "Open search",
+    "searchClose": "Close search",
+    "prevSlide": "Previous slide",
+    "nextSlide": "Next slide",
+    "externalLink": "Opens in new tab"
+  },
+  "social": {
+    "linkedin": "LinkedIn",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "github": "GitHub",
+    "x": "X (Twitter)"
+  },
+  "cookie": {
+    "banner": {
+      "title": "Cookie Preferences",
+      "description": "We use cookies to enhance your experience, analyze site traffic, and support our marketing efforts. You can customize your preferences below.",
+      "acceptAll": "Accept All",
+      "rejectNonEssential": "Reject Non-Essential",
+      "customize": "Customize",
+      "save": "Save Preferences"
+    },
+    "categories": {
+      "essential": { "title": "Essential", "description": "Required for the site to function. Cannot be disabled." },
+      "analytics": { "title": "Analytics", "description": "Help us understand how visitors use our site." },
+      "marketing": { "title": "Marketing", "description": "Used to deliver relevant advertisements." }
+    }
+  }
+}
+

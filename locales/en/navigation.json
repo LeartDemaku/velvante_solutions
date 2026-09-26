@@ -1,0 +1,28 @@
+{
+  "home": "Home",
+  "about": "About",
+  "services": "Services",
+  "projects": "Projects",
+  "blog": "Blog",
+  "contact": "Contact",
+  "startProject": "Start a Project",
+  "language": "Language",
+  "languages": { "en": "English", "sq": "Albanian" },
+  "menu": "Menu",
+  "close": "Close",
+  "servicesMenu": {
+    "title": "Our Services",
+    "subtitle": "Everything you need to build and grow your digital presence.",
+    "webDesign": "Web Design",
+    "fullstack": "Full-Stack Development",
+    "ecommerce": "E-Commerce",
+    "webApps": "Web Applications",
+    "uiUx": "UI/UX Design",
+    "backend": "Backend & APIs",
+    "database": "Database & Infrastructure",
+    "seo": "SEO & Performance",
+    "ai": "AI & Automation",
+    "security": "Security",
+    "maintenance": "Maintenance & Support"
+  }
+}

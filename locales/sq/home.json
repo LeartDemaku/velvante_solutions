@@ -1,0 +1,91 @@
+{
+  "hero": {
+    "headline": "Përvoja Dixhitale të Inxhinieruara për Rritje.",
+    "subheadline": "Ne dizajnojmë dhe ndërtojmë faqe interneti me performancë të lartë, aplikacione web dhe sisteme dixhitale që ndihmojnë bizneset ambicioze të rriten, konvertojnë dhe operojnë më mirë.",
+    "cta": { "primary": "Fillo një Projekt", "secondary": "Eksploroni Punën Tonë" },
+    "badge": "Zgjidhje Dixhitale Full-Stack",
+    "scrollIndicator": "Rrëshqit për të eksploruar"
+  },
+  "trust": {
+    "title": "Besuar nga Bizneset Nëpër Europë",
+    "metrics": {
+      "projects": { "value": "80+", "label": "Projekte të Dorëzuara" },
+      "clients": { "value": "60+", "label": "Biznese të Transformuara" },
+      "performance": { "value": "95+", "label": "Rezultat Mesatar Lighthouse" },
+      "countries": { "value": "12+", "label": "Vende të Shërbyera" }
+    }
+  },
+  "problem": {
+    "badge": "Problemi",
+    "headline": "Shumica e Bizneseve Funksionojnë mbi një Themel Dixhital të Thyer.",
+    "subheadline": "Faqet e vjetruara, përvojat e dobëta mobile, performanca e ngadaltë dhe mjetet e fragmentuara dixhitale po u kushtojnë bizneseve të ardhura çdo ditë.",
+    "problems": [
+      { "title": "Faqe Interneti të Vjetruara", "description": "Faqja juaj e internetit u dizajnua vite më parë dhe nuk reflekton më cilësinë e biznesit tuaj." },
+      { "title": "Përvojë e Dobët Mobile", "description": "Mbi 60% e vizitorëve tuaj janë në mobile, por faqja juaj nuk u dizajnua kurrë për ta." },
+      { "title": "Performancë e Ngadaltë", "description": "Çdo sekondë kohë ngarkimi ju kushton 7% në konvertime. Shpejtësia është të ardhura." },
+      { "title": "SEO i Dobët", "description": "Jeni i padukshëm për motorët e kërkimit që klientët tuaj idealë i përdorin çdo ditë." },
+      { "title": "Konvertime të Ulëta", "description": "Vizitorët vijnë, shikojnë përreth dhe largohen pa ndërmarrë asnjë veprim." },
+      { "title": "Sisteme të Fragmentuara", "description": "Mjetet tuaja dixhitale nuk komunikojnë me njëra-tjetrën, duke krijuar joeficencë." }
+    ],
+    "solution": "Velvante Solutions zgjidh të gjitha këto."
+  },
+  "services": {
+    "badge": "Çfarë Bëjmë",
+    "headline": "Inxhinieri Dixhitale e Plotë.",
+    "subheadline": "Nga strategjia dhe dizajni deri te zhvillimi dhe infrastruktura — ne trajtojmë stakun e plotë dixhital."
+  },
+  "process": {
+    "badge": "Si Punojmë",
+    "headline": "Një Proces i Ndërtuar për Rezultate.",
+    "subheadline": "Ne ndjekim një proces sistematik dhe transparent që ju mban të informuar dhe në kontroll në çdo fazë.",
+    "steps": [
+      { "number": "01", "title": "Zbulim", "description": "Fillojmë duke kuptuar thellësisht biznesin, qëllimet, audiencën dhe peizazhin konkurrues tuaj." },
+      { "number": "02", "title": "Strategji", "description": "Zhvillojmë një strategji të detajuar teknike dhe krijuese të përshtatur me objektivat tuaja specifike." },
+      { "number": "03", "title": "Dizajn", "description": "Krijon dizajne vizualisht të sakta që komunikojnë markën tuaj dhe udhëzojnë përdoruesit drejt konvertimit." },
+      { "number": "04", "title": "Zhvillim", "description": "Ne inxhinierojmë zgjidhjen tuaj me kod të nivelit të prodhimit, testim rigoroz dhe optimizim performancë." },
+      { "number": "05", "title": "Lançim", "description": "Ne vendosim projektin tuaj me lëshime pa kohë ndërrprerjeje dhe siguri cilësie gjithëpërfshirëse." },
+      { "number": "06", "title": "Rritje", "description": "Ne monitorojmë, optimizojmë dhe iterojmë për të siguruar që sistemi juaj dixhital të vazhdojë të rritet." }
+    ]
+  },
+  "projects": {
+    "badge": "Punë e Zgjedhur",
+    "headline": "Projekte Dixhitale të Orientuara nga Rezultatet.",
+    "subheadline": "Çdo projekt që marrim ndërtojmë për të performuar. Ja një zgjedhje e punës me të cilën jemi krenarë."
+  },
+  "techStack": {
+    "badge": "Teknologji",
+    "headline": "I Ndërtuar me të Mirat.",
+    "subheadline": "Ne përdorim teknologji moderne dhe të provuara që janë me performancë, të shkallëzueshme dhe të ndërtuar për afat të gjatë."
+  },
+  "why": {
+    "badge": "Pse Velvante Solutions",
+    "headline": "Saktësi. Performancë. Partneritet.",
+    "subheadline": "Ne nuk jemi një agjenci që ju dorëzon një ekipi junior pas shitjes. Çdo projekt merr vëmendje të lartë nga fillimi deri në fund.",
+    "reasons": [
+      { "title": "Inxhinieri e Nivelit Senior", "description": "Çdo projekt trajtohet nga inxhinierë me përvojë — kurrë i jashtëzakonitur apo deleguar te juniori." },
+      { "title": "Qasje e Para-Performancës", "description": "Ne inxhinierojmë për shpejtësi, shkallëzueshmëri dhe besueshmëri që nga rreshti i parë i kodit." },
+      { "title": "Transparencë e Plotë", "description": "Keni dukshmëri të plotë mbi progresin, afatet kohore dhe vendimet në çdo fazë të projektit tuaj." },
+      { "title": "Partneritet Afatgjatë", "description": "Ne ndërtojmë për afat të gjatë. Klientët tanë qëndrojnë me ne sepse vazhdojmë të ofrojmë vlerë." },
+      { "title": "Llogaritje e Rezultateve", "description": "Ne matim suksesin nga rezultatet e biznesit tuaj — jo vetëm dorëzime." },
+      { "title": "Pa Bllokime", "description": "Ju zotëroni kodin, të dhënat dhe infrastrukturën tuaj. Gjithmonë." }
+    ]
+  },
+  "testimonials": {
+    "badge": "Rezultate Klientësh",
+    "headline": "Çfarë Thonë Klientët Tanë.",
+    "subheadline": "Ne matim suksesin nga rezultatet që ofrojmë për klientët tanë."
+  },
+  "blog": {
+    "badge": "Njohuri",
+    "headline": "Njohuri Që Ia Vlen të Lexohen.",
+    "subheadline": "Perspektiva praktike mbi zhvillimin web, dizajnin, SEO dhe strategjinë dixhitale — nga ekipi ynë."
+  },
+  "cta": {
+    "badge": "Le të Punojmë Bashkë",
+    "headline": "Gati për të Ndërtuar Diçka të Jashtëzakonshme?",
+    "subheadline": "Na tregoni për projektin tuaj dhe do t'ju kthejmë përgjigje brenda 24 orëve me një përgjigje të përshtatur.",
+    "primary": "Fillo një Projekt",
+    "secondary": "Planifiko një Thirrje"
+  }
+}
+

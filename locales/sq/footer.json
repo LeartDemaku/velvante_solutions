@@ -1,0 +1,49 @@
+{
+  "company": {
+    "description": "Ne dizajnojmë dhe ndërtojmë sisteme dixhitale me performancë të lartë që lëvizin bizneset përpara. Teknologji premium, inxhinieri e saktë."
+  },
+  "navigation": {
+    "company": {
+      "title": "Kompania",
+      "links": [
+        { "label": "Rreth Nesh", "href": "/about" },
+        { "label": "Shërbime", "href": "/services" },
+        { "label": "Projekte", "href": "/projects" },
+        { "label": "Blog", "href": "/blog" },
+        { "label": "Kontakt", "href": "/contact" }
+      ]
+    },
+    "services": {
+      "title": "Shërbime",
+      "links": [
+        { "label": "Dizajn Web", "href": "/services/web-design" },
+        { "label": "Zhvillim Full-Stack", "href": "/services/fullstack-development" },
+        { "label": "E-Commerce", "href": "/services/ecommerce" },
+        { "label": "Aplikacione Web", "href": "/services/web-applications" },
+        { "label": "Dizajn UI/UX", "href": "/services/ui-ux-design" },
+        { "label": "SEO dhe Performancë", "href": "/services/seo-performance" }
+      ]
+    },
+    "legal": {
+      "title": "Ligjore",
+      "links": [
+        { "label": "Politika e Privatësisë", "href": "/privacy-policy" },
+        { "label": "Kushtet e Përdorimit", "href": "/terms" },
+        { "label": "Politika e Cookies", "href": "/cookie-policy" },
+        { "label": "Aksesueshmëria", "href": "/accessibility" }
+      ]
+    }
+  },
+  "newsletter": {
+    "title": "Qëndroni të Informuar",
+    "description": "Njohuri mbi zhvillimin web, dizajnin dhe strategjinë dixhitale — të dërguara mujore."
+  },
+  "contact": {
+    "email": "velvantesolutions@outlook.com",
+    "phone": "+383 44 000 000",
+    "location": "Prishtinë, Kosovë"
+  },
+  "copyright": "© {year} Velvante Solutions. Të gjitha të drejtat e rezervuara.",
+  "madeWith": "Inxhinieruar me saktësi."
+}
+

@@ -1,0 +1,38 @@
+{
+  "hero": {
+    "headline": "Let's Build Something Exceptional.",
+    "subheadline": "Tell us about your project. We review every inquiry personally and respond within 24 hours."
+  },
+  "form": {
+    "title": "Send Us a Message",
+    "fields": {
+      "name": { "label": "Full Name", "placeholder": "John Smith" },
+      "company": { "label": "Company", "placeholder": "Your company name" },
+      "email": { "label": "Email Address", "placeholder": "john@company.com" },
+      "phone": { "label": "Phone Number", "placeholder": "+1 234 567 8900" },
+      "service": { "label": "Service of Interest", "placeholder": "Select a service" },
+      "message": { "label": "Project Description", "placeholder": "Tell us about your project, goals, and timeline..." }
+    },
+    "success": {
+      "title": "Message Sent Successfully",
+      "description": "Thank you for reaching out. We will review your message and respond within 24 hours."
+    },
+    "error": {
+      "title": "Something went wrong",
+      "description": "Please try again or email us directly at velvantesolutions@outlook.com"
+    }
+  },
+  "methods": {
+    "title": "Other Ways to Reach Us",
+    "email": { "label": "Email", "value": "velvantesolutions@outlook.com" },
+    "phone": { "label": "Phone", "value": "+383 44 000 000" },
+    "whatsapp": { "label": "WhatsApp", "value": "Chat with us" },
+    "location": { "label": "Location", "value": "Pristina, Kosovo" }
+  },
+  "consultation": {
+    "title": "Prefer a Call?",
+    "description": "Schedule a free 30-minute consultation call to discuss your project with our team.",
+    "cta": "Book a Consultation"
+  }
+}
+

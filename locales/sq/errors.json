@@ -1,0 +1,33 @@
+{
+  "404": {
+    "title": "Faqja nuk u Gjet",
+    "headline": "Duket se kjo faqe mori një kthesë të gabuar.",
+    "description": "Faqja që po kërkoni nuk ekziston ose është zhvendosur. Le t'ju ndihmojmë të ktheheni në rrugën e duhur.",
+    "cta": "Kthehu në Ballina"
+  },
+  "500": {
+    "title": "Gabim Serveri",
+    "headline": "Diçka shkoi keq nga ana jonë.",
+    "description": "Po përjetojmë një problem teknik. Ekipi ynë është njoftuar dhe po punon për ta zgjidhur. Ju lutemi provoni përsëri.",
+    "cta": "Provo Përsëri"
+  },
+  "offline": {
+    "title": "Jeni Jashtë Linje",
+    "headline": "Nuk ka lidhje interneti.",
+    "description": "Ju lutemi kontrolloni lidhjen tuaj dhe provoni përsëri.",
+    "cta": "Provo Përsëri"
+  },
+  "unauthorized": {
+    "title": "Pa Autorizim",
+    "headline": "Nuk keni leje për të hyrë në këtë faqe.",
+    "description": "Ju lutemi identifikohuni ose kontaktoni administratorin tuaj.",
+    "cta": "Identifikohu"
+  },
+  "api": {
+    "generic": "Ndodhi një gabim i papritur. Ju lutemi provoni përsëri.",
+    "network": "Gabim rrjeti. Ju lutemi kontrolloni lidhjen tuaj.",
+    "validation": "Ju lutemi kontrolloni hyrjen tuaj dhe provoni përsëri.",
+    "rateLimit": "Shumë kërkesa. Ju lutemi prisni një moment dhe provoni përsëri.",
+    "serverError": "Gabim serveri. Ekipi ynë është njoftuar."
+  }
+}

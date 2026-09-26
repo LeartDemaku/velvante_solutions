@@ -1,0 +1,91 @@
+{
+  "hero": {
+    "headline": "Digital Experiences Engineered for Growth.",
+    "subheadline": "We design and build high-performance websites, web applications and digital systems that help ambitious businesses grow, convert and operate better.",
+    "cta": { "primary": "Start a Project", "secondary": "Explore Our Work" },
+    "badge": "Full-Stack Digital Solutions",
+    "scrollIndicator": "Scroll to explore"
+  },
+  "trust": {
+    "title": "Trusted by Businesses Across Europe",
+    "metrics": {
+      "projects": { "value": "80+", "label": "Projects Delivered" },
+      "clients": { "value": "60+", "label": "Businesses Transformed" },
+      "performance": { "value": "95+", "label": "Avg. Lighthouse Score" },
+      "countries": { "value": "12+", "label": "Countries Served" }
+    }
+  },
+  "problem": {
+    "badge": "The Problem",
+    "headline": "Most Businesses Are Running on a Broken Digital Foundation.",
+    "subheadline": "Outdated websites, poor mobile experiences, slow performance, and fragmented digital tools are quietly costing businesses revenue every single day.",
+    "problems": [
+      { "title": "Outdated Websites", "description": "Your website was designed years ago and no longer reflects the quality of your business." },
+      { "title": "Poor Mobile Experience", "description": "Over 60% of your visitors are on mobile, but your site was never designed for them." },
+      { "title": "Slow Performance", "description": "Every second of load time costs you 7% in conversions. Speed is revenue." },
+      { "title": "Weak SEO", "description": "You're invisible to the search engines your ideal customers use every day." },
+      { "title": "Low Conversions", "description": "Visitors arrive, look around, and leave without taking any action." },
+      { "title": "Fragmented Systems", "description": "Your digital tools don't talk to each other, creating inefficiency and blind spots." }
+    ],
+    "solution": "Velvante Solutions solves all of this."
+  },
+  "services": {
+    "badge": "What We Do",
+    "headline": "Full-Service Digital Engineering.",
+    "subheadline": "From strategy and design to development and infrastructure — we handle the complete digital stack."
+  },
+  "process": {
+    "badge": "How We Work",
+    "headline": "A Process Built for Results.",
+    "subheadline": "We follow a systematic, transparent process that keeps you informed and in control at every stage.",
+    "steps": [
+      { "number": "01", "title": "Discovery", "description": "We start by deeply understanding your business, goals, audience, and competitive landscape." },
+      { "number": "02", "title": "Strategy", "description": "We develop a detailed technical and creative strategy tailored to your specific objectives." },
+      { "number": "03", "title": "Design", "description": "We craft visually precise designs that communicate your brand and guide users toward conversion." },
+      { "number": "04", "title": "Development", "description": "We engineer your solution with production-grade code, rigorous testing, and performance optimization." },
+      { "number": "05", "title": "Launch", "description": "We deploy your project with zero-downtime releases and comprehensive quality assurance." },
+      { "number": "06", "title": "Growth", "description": "We monitor, optimize, and iterate to ensure your digital system continues to grow with your business." }
+    ]
+  },
+  "projects": {
+    "badge": "Selected Work",
+    "headline": "Results-Driven Digital Projects.",
+    "subheadline": "Every project we take on is built to perform. Here's a selection of the work we're proud of."
+  },
+  "techStack": {
+    "badge": "Technology",
+    "headline": "Built with the Best.",
+    "subheadline": "We use modern, proven technologies that are performant, scalable, and built for the long term."
+  },
+  "why": {
+    "badge": "Why Velvante Solutions",
+    "headline": "Precision. Performance. Partnership.",
+    "subheadline": "We are not an agency that hands you off to a junior team after the sale. Every project receives senior attention from start to finish.",
+    "reasons": [
+      { "title": "Senior-Level Engineering", "description": "Every project is handled by experienced engineers — never outsourced or delegated to juniors." },
+      { "title": "Performance-First Approach", "description": "We engineer for speed, scalability, and reliability from the very first line of code." },
+      { "title": "Full Transparency", "description": "You have full visibility into progress, timelines, and decisions at every stage of your project." },
+      { "title": "Long-Term Partnership", "description": "We build for the long term. Our clients stay with us because we continue to deliver value beyond launch." },
+      { "title": "Results Accountability", "description": "We measure success by your business outcomes — not just deliverables." },
+      { "title": "No Lock-in", "description": "You own your code, your data, and your infrastructure. Always." }
+    ]
+  },
+  "testimonials": {
+    "badge": "Client Results",
+    "headline": "What Our Clients Say.",
+    "subheadline": "We measure success by the outcomes we deliver for our clients."
+  },
+  "blog": {
+    "badge": "Insights",
+    "headline": "Knowledge Worth Reading.",
+    "subheadline": "Practical perspectives on web development, design, SEO, and digital strategy — from our team."
+  },
+  "cta": {
+    "badge": "Let's Work Together",
+    "headline": "Ready to Build Something Exceptional?",
+    "subheadline": "Tell us about your project and we'll get back to you within 24 hours with a tailored response.",
+    "primary": "Start a Project",
+    "secondary": "Schedule a Call"
+  }
+}
+

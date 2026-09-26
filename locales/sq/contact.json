@@ -1,0 +1,38 @@
+{
+  "hero": {
+    "headline": "Le të Ndërtojmë Diçka të Jashtëzakonshme.",
+    "subheadline": "Na tregoni për projektin tuaj. Ne shqyrtojmë çdo pyetje personalisht dhe i përgjigjemi brenda 24 orëve."
+  },
+  "form": {
+    "title": "Na Dërgoni një Mesazh",
+    "fields": {
+      "name": { "label": "Emri i Plotë", "placeholder": "Agim Berisha" },
+      "company": { "label": "Kompania", "placeholder": "Emri i kompanisë tuaj" },
+      "email": { "label": "Adresa Email", "placeholder": "agim@kompania.com" },
+      "phone": { "label": "Numri i Telefonit", "placeholder": "+383 44 000 000" },
+      "service": { "label": "Shërbimi i Interesit", "placeholder": "Zgjidhni një shërbim" },
+      "message": { "label": "Përshkrimi i Projektit", "placeholder": "Na tregoni për projektin, qëllimet dhe afatin kohor tuaj..." }
+    },
+    "success": {
+      "title": "Mesazhi u Dërgua me Sukses",
+      "description": "Faleminderit që na kontaktuat. Do të shqyrtojmë mesazhin tuaj dhe do t'ju përgjigjemi brenda 24 orëve."
+    },
+    "error": {
+      "title": "Diçka shkoi keq",
+      "description": "Ju lutemi provoni përsëri ose na dërgoni email direkt në velvantesolutions@outlook.com"
+    }
+  },
+  "methods": {
+    "title": "Mënyra të Tjera për të Na Arritur",
+    "email": { "label": "Email", "value": "velvantesolutions@outlook.com" },
+    "phone": { "label": "Telefon", "value": "+383 44 000 000" },
+    "whatsapp": { "label": "WhatsApp", "value": "Bisedoni me ne" },
+    "location": { "label": "Vendndodhja", "value": "Prishtinë, Kosovë" }
+  },
+  "consultation": {
+    "title": "Preferoni një Thirrje?",
+    "description": "Planifikoni një thirrje falas konsultimi 30 minutash për të diskutuar projektin tuaj me ekipin tonë.",
+    "cta": "Rezervoni një Konsultim"
+  }
+}
+

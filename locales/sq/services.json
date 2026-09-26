@@ -1,0 +1,17 @@
+{
+  "hero": {
+    "badge": "Shërbime",
+    "headline": "Inxhinieri Dixhitale e Plotë.",
+    "subheadline": "Nga strategjia dhe dizajni deri te zhvillimi dhe infrastruktura — ne trajtojmë stakun tuaj të plotë dixhital."
+  },
+  "overview": {
+    "badge": "Çfarë Ofrojmë",
+    "headline": "Çdo aftësi që nevojitet, nën një çati.",
+    "subheadline": "Ne jemi një ekip multidisiplinar me ekspertizë të thellë në çdo shtresë të sistemeve moderne dixhitale."
+  },
+  "cta": {
+    "headline": "Keni një Projekt në Mendje?",
+    "subheadline": "Na tregoni çfarë keni nevojë dhe do t'ju tregojmë si mund të ndihmojmë.",
+    "primary": "Fillo një Projekt"
+  }
+}

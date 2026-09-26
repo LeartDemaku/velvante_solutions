@@ -1,0 +1,41 @@
+{
+  "hero": {
+    "badge": "Rreth Velvante Solutions",
+    "headline": "Ne Jemi një Kompani Teknologjie që e Merr Inxhinierinë Seriozisht.",
+    "subheadline": "E themeluar me bindjen se shumica e bizneseve meritojnë sisteme dixhitale më të mira — ne u nisëm t'i ndërtojmë ato."
+  },
+  "mission": {
+    "badge": "Misioni Ynë",
+    "headline": "Të inxhinierojmë sisteme dixhitale që i japin bizneseve një avantazh konkurrues real.",
+    "description": "Ne besojmë se teknologjia e shkëlqyer duhet të jetë e aksesueshme për bizneset ambicioze të të gjitha madhësive — jo vetëm gjigantët e ndërmarrjeve."
+  },
+  "vision": {
+    "badge": "Vizioni Ynë",
+    "headline": "Një botë ku çdo biznes funksionon mbi një themel dixhital të denjë për ambicionin e tij.",
+    "description": "Ne parashikojmë një të ardhme ku infrastruktura dixhitale ndërtohet me integritet absolut inxhinierik, duke u dhënë kompanive ambicioze besueshmëri dhe performancë të nivelit më të lartë."
+  },
+  "values": {
+    "badge": "Vlerat Tona",
+    "headline": "Parimet që Udhëzojnë Punën Tonë.",
+    "items": [
+      { "title": "Saktësi", "description": "Jemi metikulozë në gjithçka që ndërtojmë. Pa shkurtore, pa kompromise." },
+      { "title": "Inovacion", "description": "Qëndrojmë në ballë të teknologjisë që klientët tanë të kenë gjithmonë qasje te zgjidhjet më të mira." },
+      { "title": "Transparencë", "description": "Komunikojmë hapur në çdo fazë. Pa surpriza, pa kosto të fshehura." },
+      { "title": "Performancë", "description": "Ne masim suksesin me rezultate, jo me dorëzime." },
+      { "title": "Besueshmëri", "description": "Ne angazhohemi ndaj afateve dhe i mbajmë ato." },
+      { "title": "Partneritet", "description": "Jemi të investuar në suksesin tuaj afatgjatë, jo vetëm projektin fillestar." }
+    ]
+  },
+  "team": {
+    "badge": "Ekipi Ynë",
+    "headline": "Njerëzit Pas Velvante Solutions.",
+    "subheadline": "Udhëheqja teknike dhe vizioni inxhinierik pas çdo zgjidhjeje dixhitale që ndërtojmë."
+  },
+  "cta": {
+    "headline": "Punoni me një Ekip që Kujdeset.",
+    "subheadline": "Çdo projekt në Velvante Solutions merr vëmendje senior nga zbulimi deri në dorëzim.",
+    "primary": "Fillo një Projekt",
+    "secondary": "Shiko Punën Tonë"
+  }
+}
+

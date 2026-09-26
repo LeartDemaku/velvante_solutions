@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="vsBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#12132D" />
+      <stop offset="50%" stop-color="#0A0B1A" />
+      <stop offset="100%" stop-color="#04040B" />
+    </linearGradient>
+
+    <!-- Outer Border Glow Gradient -->
+    <linearGradient id="vsBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE" />
+      <stop offset="30%" stop-color="#6366F1" />
+      <stop offset="70%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+
+    <!-- Bracket Left Gradient (Electric Cyan) -->
+    <linearGradient id="vsLeftBracket" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F2FE" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+
+    <!-- Letter V Gradient (Cyan to Indigo) -->
+    <linearGradient id="vsLetterV" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="60%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#818CF8" />
+    </linearGradient>
+
+    <!-- Code Slash Gradient (Electric Gradient) -->
+    <linearGradient id="vsSlash" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00F2FE" />
+      <stop offset="50%" stop-color="#818CF8" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+
+    <!-- Letter S Gradient (Purple to Pink) -->
+    <linearGradient id="vsLetterS" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A855F7" />
+      <stop offset="50%" stop-color="#C084FC" />
+      <stop offset="100%" stop-color="#F43F5E" />
+    </linearGradient>
+
+    <!-- Bracket Right Gradient (Pinkish Purple) -->
+    <linearGradient id="vsRightBracket" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C084FC" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+
+    <!-- Radial Ambient Center Glow -->
+    <radialGradient id="vsGlowCenter" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#6366F1" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#6366F1" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Neon Glow Filter -->
+    <filter id="vsNeonFilter" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3.5" result="coloredBlur" />
+      <feMerge>
+        <feMergeNode in="coloredBlur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Container Squircle with Glass Neon Edge -->
+  <rect x="5" y="5" width="118" height="118" rx="28" fill="url(#vsBg)" stroke="url(#vsBorder)" stroke-width="2.5" />
+  <rect x="7" y="7" width="114" height="114" rx="26" fill="url(#vsGlowCenter)" />
+  <rect x="7" y="7" width="114" height="114" rx="26" fill="none" stroke="#FFFFFF" stroke-opacity="0.07" stroke-width="1" />
+
+  <!-- Code Bracket Left: < -->
+  <path d="M27 44 L15 64 L27 84" 
+        stroke="url(#vsLeftBracket)" 
+        stroke-width="6.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        filter="url(#vsNeonFilter)" />
+
+  <!-- Letter V -->
+  <path d="M36 43 L50 85 L62 43" 
+        stroke="url(#vsLetterV)" 
+        stroke-width="7.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" />
+
+  <!-- Code Slash: / (Passing between V and S) -->
+  <path d="M57 86 L71 42" 
+        stroke="url(#vsSlash)" 
+        stroke-width="5" 
+        stroke-linecap="round" 
+        filter="url(#vsNeonFilter)" />
+
+  <!-- Letter S -->
+  <path d="M93 51 C93 45 88 41.5 81.5 41.5 C73.5 41.5 69 46 69 52.5 C69 61 78.5 63 84.5 65.5 C91 68.5 94 72.5 94 78 C94 85.5 86.5 89.5 79 89.5 C70 89.5 66 84.5 66 79" 
+        stroke="url(#vsLetterS)" 
+        stroke-width="7.5" 
+        stroke-linecap="round" 
+        fill="none" />
+
+  <!-- Code Bracket Right: > -->
+  <path d="M101 44 L113 64 L101 84" 
+        stroke="url(#vsRightBracket)" 
+        stroke-width="6.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        filter="url(#vsNeonFilter)" />
+
+  <!-- Digital Accent Points -->
+  <circle cx="15" cy="64" r="2.5" fill="#00F2FE" />
+  <circle cx="113" cy="64" r="2.5" fill="#EC4899" />
+</svg>

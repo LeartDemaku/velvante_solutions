@@ -1,0 +1,30 @@
+{
+  "hero": {
+    "badge": "Blog",
+    "headline": "Njohuri dhe Perspektiva.",
+    "subheadline": "Njohuri praktike mbi zhvillimin web, dizajnin, SEO dhe strategjinë dixhitale nga ekipi Velvante Solutions."
+  },
+  "filters": {
+    "all": "Të Gjithë Artikujt",
+    "search": "Kërko artikuj...",
+    "noResults": "Nuk u gjetën artikuj për kërkimin tuaj."
+  },
+  "article": {
+    "readingTime": "{minutes} min lexim",
+    "publishedOn": "Botuar më",
+    "by": "Nga",
+    "share": "Ndajeni këtë artikull",
+    "tableOfContents": "Tabela e Përmbajtjes",
+    "relatedArticles": "Artikuj të Ngjashëm",
+    "tags": "Etiketa"
+  },
+  "newsletter": {
+    "title": "Merrni artikuj në kutinë tuaj postare",
+    "description": "Përmbledhje mujore e përmbajtjes sonë më të mirë. Pa spam, kurrë."
+  },
+  "empty": {
+    "title": "Ende pa artikuj",
+    "description": "Po punojmë në përmbajtje të shkëlqyer. Kontrolloni së shpejti."
+  }
+}
+

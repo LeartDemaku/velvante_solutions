@@ -1,0 +1,28 @@
+{
+  "hero": {
+    "badge": "Our Work",
+    "headline": "Projects Built to Perform.",
+    "subheadline": "A curated selection of digital products and systems we've engineered for clients across industries."
+  },
+  "filters": {
+    "all": "All",
+    "websites": "Websites",
+    "ecommerce": "E-Commerce",
+    "webApps": "Web Applications",
+    "software": "Custom Software"
+  },
+  "caseStudy": {
+    "client": "Client",
+    "industry": "Industry",
+    "technologies": "Technologies",
+    "challenge": "The Challenge",
+    "solution": "The Solution",
+    "results": "The Results",
+    "nextProject": "Next Project",
+    "prevProject": "Previous Project"
+  },
+  "empty": {
+    "title": "No projects found",
+    "description": "No projects match your current filters. Try selecting a different category."
+  }
+}

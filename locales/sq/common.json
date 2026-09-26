@@ -1,0 +1,70 @@
+{
+  "brand": {
+    "name": "Velvante Solutions",
+    "tagline": "Ne Ndërtojmë Sisteme Dixhitale që Lëvizin Bizneset Përpara.",
+    "shortTagline": "Përvoja Dixhitale dhe Zgjidhje Full-Stack",
+    "description": "Velvante Solutions është një kompani premium teknologjie dhe zgjidhjesh dixhitale. Ne dizajnojmë, ndërtojmë dhe shkallëzojmë përvoja dixhitale që lëvizin bizneset përpara."
+  },
+  "cta": {
+    "startProject": "Fillo një Projekt",
+    "exploreWork": "Eksploroni Punën Tonë",
+    "learnMore": "Mëso Më Shumë",
+    "getInTouch": "Na Kontaktoni",
+    "viewAll": "Shiko të Gjitha",
+    "readMore": "Lexo Më Shumë",
+    "viewProject": "Shiko Projektin",
+    "viewCaseStudy": "Shiko Studimin e Rastit",
+    "downloadPdf": "Shkarko PDF",
+    "scheduleCall": "Planifiko një Thirrje",
+    "subscribe": "Abonohu",
+    "send": "Dërgo Mesazhin",
+    "submit": "Dërgo",
+    "next": "Tjetër",
+    "back": "Mbrapa",
+    "finish": "Dërgo Kërkesën",
+    "backToHome": "Kthehu në Fillim",
+    "seeAllProjects": "Shiko të Gjitha Projektet",
+    "seeAllPosts": "Shiko të Gjitha Artikujt",
+    "seeAllServices": "Shiko të Gjitha Shërbimet"
+  },
+  "status": {
+    "loading": "Duke ngarkuar...",
+    "sending": "Duke dërguar...",
+    "saving": "Duke ruajtur...",
+    "submitting": "Duke dërguar..."
+  },
+  "aria": {
+    "closeMenu": "Mbyll menunë",
+    "openMenu": "Hap menunë",
+    "toggleLanguage": "Ndrysho gjuhën",
+    "scrollToTop": "Shko lart",
+    "searchOpen": "Hap kërkimin",
+    "searchClose": "Mbyll kërkimin",
+    "prevSlide": "Rrëshqitja e mëparshme",
+    "nextSlide": "Rrëshqitja tjetër",
+    "externalLink": "Hapet në skedë të re"
+  },
+  "social": {
+    "linkedin": "LinkedIn",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "github": "GitHub",
+    "x": "X (Twitter)"
+  },
+  "cookie": {
+    "banner": {
+      "title": "Preferencat e Cookies",
+      "description": "Ne përdorim cookies për të përmirësuar përvojën tuaj, analizuar trafikun e sitit dhe mbështetur përpjekjet tona të marketingut.",
+      "acceptAll": "Prano të Gjitha",
+      "rejectNonEssential": "Refuzo Jo-Thelbësoret",
+      "customize": "Personalizoni",
+      "save": "Ruaj Preferencat"
+    },
+    "categories": {
+      "essential": { "title": "Thelbësore", "description": "Të nevojshme për funksionimin e sitit. Nuk mund të çaktivizohen." },
+      "analytics": { "title": "Analitikë", "description": "Na ndihmojnë të kuptojmë si vizitorët përdorin sitin tonë." },
+      "marketing": { "title": "Marketing", "description": "Përdoren për të ofruar reklama relevante." }
+    }
+  }
+}
+

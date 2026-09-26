@@ -1,0 +1,49 @@
+{
+  "company": {
+    "description": "We design and build high-performance digital systems that move businesses forward. Premium technology, precision engineering."
+  },
+  "navigation": {
+    "company": {
+      "title": "Company",
+      "links": [
+        { "label": "About", "href": "/about" },
+        { "label": "Services", "href": "/services" },
+        { "label": "Projects", "href": "/projects" },
+        { "label": "Blog", "href": "/blog" },
+        { "label": "Contact", "href": "/contact" }
+      ]
+    },
+    "services": {
+      "title": "Services",
+      "links": [
+        { "label": "Web Design", "href": "/services/web-design" },
+        { "label": "Full-Stack Development", "href": "/services/fullstack-development" },
+        { "label": "E-Commerce", "href": "/services/ecommerce" },
+        { "label": "Web Applications", "href": "/services/web-applications" },
+        { "label": "UI/UX Design", "href": "/services/ui-ux-design" },
+        { "label": "SEO & Performance", "href": "/services/seo-performance" }
+      ]
+    },
+    "legal": {
+      "title": "Legal",
+      "links": [
+        { "label": "Privacy Policy", "href": "/privacy-policy" },
+        { "label": "Terms of Service", "href": "/terms" },
+        { "label": "Cookie Policy", "href": "/cookie-policy" },
+        { "label": "Accessibility", "href": "/accessibility" }
+      ]
+    }
+  },
+  "newsletter": {
+    "title": "Stay Informed",
+    "description": "Insights on web development, design, and digital strategy — delivered monthly."
+  },
+  "contact": {
+    "email": "velvantesolutions@outlook.com",
+    "phone": "+383 44 000 000",
+    "location": "Pristina, Kosovo"
+  },
+  "copyright": "© {year} Velvante Solutions. All rights reserved.",
+  "madeWith": "Engineered with precision."
+}
+
