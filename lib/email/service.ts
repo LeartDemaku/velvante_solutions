@@ -504,3 +504,91 @@ export async function sendTestEmail(): Promise<{ ok: boolean; messageId?: string
     return { ok: false, error: err?.message || 'SMTP sending failed' };
   }
 }
+
+export async function sendPasswordResetEmail(email: string, resetLink: string): Promise<{ ok: boolean; messageId?: string; error?: string }> {
+  const subject = '🔐 Velvante Solutions — Rivendosja e Fjalëkalimit të Administratorit';
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
+      <body style="margin: 0; padding: 0; background-color: #070710; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #f0f0f8;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #070710; padding: 40px 15px;">
+          <tr>
+            <td align="center">
+              <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="background-color: #0f0f1a; border: 1px solid #1e1e32; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <tr>
+                  <td style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); padding: 30px; text-align: center; border-bottom: 1px solid #3730a3;">
+                    <h1 style="margin: 0; font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em;">Velvante Solutions</h1>
+                    <p style="margin: 6px 0 0 0; font-size: 13px; color: #a5b4fc; font-family: monospace; text-transform: uppercase; letter-spacing: 0.1em;">
+                      Kërkesë për Rivendosjen e Fjalëkalimit
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding: 32px 30px;">
+                    <p style="margin: 0 0 16px 0; font-size: 15px; line-height: 1.6; color: #f0f0f8;">
+                      Përshëndetje Administrator,
+                    </p>
+                    <p style="margin: 0 0 24px 0; font-size: 14px; line-height: 1.6; color: #a5b4fc;">
+                      Kemi marrë një kërkesë për ndryshimin e fjalëkalimit të llogarisë tuaj administrative në <strong>Velvante Solutions CMS</strong>.
+                    </p>
+                    <div style="text-align: center; margin: 30px 0;">
+                      <a href="${resetLink}" style="display: inline-block; background-color: #6366f1; color: #ffffff; padding: 14px 32px; border-radius: 10px; font-size: 15px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 18px rgba(99,102,241,0.45); letter-spacing: 0.02em;">
+                        Rivendos Fjalëkalimin Tani &rarr;
+                      </a>
+                    </div>
+                    <div style="background-color: #16162a; border: 1px solid #222238; border-radius: 12px; padding: 16px; margin: 24px 0 16px 0; font-size: 12px; line-height: 1.6; color: #8888a8;">
+                      <strong style="color: #f0f0f8;">Shënim Sigurie:</strong> Ky link mbetet i vlefshëm për <strong>60 minuta</strong>. Nëse nuk e keni kërkuar ju këtë ndryshim, mund ta injoroni këtë email me siguri të plotë.
+                    </div>
+                    <p style="margin: 16px 0 0 0; font-size: 11px; color: #64748b; word-break: break-all;">
+                      Nëse butoni më sipër nuk hapet, kopjoni dhe hapni këtë link në shfletues:<br/>
+                      <a href="${resetLink}" style="color: #818cf8; text-decoration: underline;">${resetLink}</a>
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="background-color: #0b0b14; padding: 16px; text-align: center; border-top: 1px solid #1a1a2e; font-size: 12px; color: #64748b; font-family: monospace;">
+                    © ${new Date().getFullYear()} Velvante Solutions • velvantesolutions@outlook.com
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+    </html>
+  `;
+  const text = `Velvante Solutions - Rivendosja e Fjalëkalimit\n\nPërshëndetje,\n\nKlikoni linkun e mëposhtëm për të ndryshuar fjalëkalimin tuaj:\n${resetLink}\n\nKy link skadon brenda 60 minutave.\n\nVelvante Solutions`;
+
+  if (process.env.RESEND_API_KEY) {
+    const resendResult = await sendViaResend({
+      to: email,
+      subject,
+      html,
+      text,
+    });
+    if (resendResult.ok) return resendResult;
+  }
+
+  const config = getEmailConfig();
+  if (!config) {
+    return { ok: false, error: 'Email configuration not found' };
+  }
+
+  try {
+    const transporter = createTransporter(config);
+    const info = await transporter.sendMail({
+      from: config.from,
+      to: email,
+      subject,
+      html,
+      text,
+    });
+    return { ok: true, messageId: info.messageId };
+  } catch (err: any) {
+    return { ok: false, error: err?.message || 'SMTP sending failed' };
+  }
+}

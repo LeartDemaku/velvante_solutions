@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Modal } from '@/components/ui/modal';
-import { Plus, Star, MessageSquare, Loader2 } from 'lucide-react';
+import { Plus, Star, MessageSquare, Loader2, Trash2 } from 'lucide-react';
 
 interface TestimonialItem {
   id: string;
@@ -73,6 +73,18 @@ export default function AdminTestimonialsPage() {
     }
   }
 
+  async function handleDelete(id: string) {
+    if (!confirm('Are you sure you want to delete this testimonial?')) return;
+    try {
+      const res = await fetch(`/api/admin/testimonials/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setTestimonials((prev) => prev.filter((t) => t.id !== id));
+      }
+    } catch (err) {
+      console.error('Failed to delete testimonial:', err);
+    }
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -114,7 +126,16 @@ export default function AdminTestimonialsPage() {
                     ))}
                   </div>
                 </div>
-                <p className="text-xs text-[rgb(var(--color-text-muted))] italic">&ldquo;{quoteEn}&rdquo;</p>
+                <div className="flex items-center justify-between pt-2 border-t border-[rgb(var(--color-border))]">
+                  <p className="text-xs text-[rgb(var(--color-text-muted))] italic flex-1">&ldquo;{quoteEn}&rdquo;</p>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="p-1.5 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors ml-3"
+                    title="Delete testimonial"
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                </div>
               </Card>
             );
           })}
