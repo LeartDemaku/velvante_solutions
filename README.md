@@ -29,7 +29,7 @@ Every component, interaction, and database model in this platform was engineered
 7. [Repository Structure](#-repository-structure)
 8. [Getting Started & Local Setup](#-getting-started--local-setup)
 9. [Environment Variables Reference](#-environment-variables-reference)
-10. [Production Build & Netlify Deployment](#-production-build--netlify-deployment)
+10. [Production Build & GitHub Deployment](#-production-build--github-deployment)
 11. [Codebase Standards & Philosophy](#-codebase-standards--philosophy)
 12. [Author & Contact](#-author--contact)
 
@@ -277,7 +277,7 @@ The relational database schema is managed via Prisma (`prisma/schema.prisma`):
 - [x] **Milestone 5 — Production Email Pipeline**: Built dual-delivery engine (Resend API + Outlook SMTP fallback) routing to `velvantesolutions@outlook.com` with localized auto-replies.
 - [x] **Milestone 6 — Mobile WebKit & Low Power Mode Hardening**: Completely eliminated initial `opacity: 0` states, migrated mobile navigation drawer to hardware CSS transitions, and added `touch-action: manipulation` for zero-delay mobile interactions.
 - [x] **Milestone 7 — Admin CMS & Lead Inbox**: Built secure administration portal (`/admin`) for leads, projects, blog posts, services, and testimonials.
-- [x] **Milestone 8 — Netlify CI/CD Integration**: Configured `netlify.toml` with build commands and environment settings.
+- [x] **Milestone 8 — GitHub & Production Optimization**: Full version control via GitHub, zero-error type safety, and production build readiness.
 
 ### Ongoing & Future Roadmap
 
@@ -348,7 +348,6 @@ velvantesolutions/
 │   ├── schema.prisma                  # PostgreSQL / SQLite relational models
 │   └── seed.ts                        # Comprehensive production seed script
 ├── public/                            # Static assets, branding logos, favicons, CV
-├── netlify.toml                       # Netlify deployment configuration
 ├── next.config.ts                     # Next.js config & legacy route redirects
 ├── package.json                       # Dependencies & scripts
 └── tsconfig.json                      # Strict TypeScript compiler options
@@ -427,33 +426,30 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🚢 Production Build & Netlify Deployment
+## 🚢 Production Build & GitHub Deployment
 
 ### Local Production Build
 
-To verify that all 54 routes compile cleanly with zero TypeScript or linting errors:
+To verify that all routes compile cleanly with zero TypeScript or linting errors:
 
 ```bash
 npm run build
 npm start
 ```
 
-### Netlify Deployment
+### GitHub Deployment
 
-The repository includes a verified `netlify.toml` file configured for Next.js builds:
+This repository is maintained and versioned via GitHub:
 
-```toml
-[build]
-  command = "npm run build"
-  publish = ".next"
-
-[build.environment]
-  NPM_FLAGS = "--legacy-peer-deps"
-```
-
-1. Connect your repository to Netlify.
-2. In the Netlify dashboard under **Site configuration > Environment variables**, add your production secrets (`DATABASE_URL`, `RESEND_API_KEY`, `CONTACT_EMAIL`, `NEXTAUTH_SECRET`).
-3. Deploy! Netlify will execute `npm run build` using the Next.js runtime plugin and serve the platform globally.
+1. Push your latest commits to your GitHub repository:
+   ```bash
+   git add .
+   git commit -m "Update platform features"
+   git push origin main
+   ```
+2. Connect your production environment (such as a VPS, cloud server, or container service) directly to your GitHub repository.
+3. Configure your production environment variables (`DATABASE_URL`, `RESEND_API_KEY`, `CONTACT_EMAIL`, `NEXTAUTH_SECRET`, `NEXTAUTH_URL`).
+4. Execute `npm run build` and `npm start` for global, high-speed serving.
 
 ---
 

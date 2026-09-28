@@ -81,6 +81,7 @@ model Project {
   slug         String    @unique
   categoryId   String
   coverImage   String
+  liveUrl      String?
   images       Json      @default("[]")
   technologies Json      @default("[]")
   featured     Boolean   @default(false)

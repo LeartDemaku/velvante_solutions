@@ -138,7 +138,7 @@ export function FounderCard({ member, locale }: FounderCardProps) {
             </Button>
             <Button
               as="a"
-              href="https://portfolio-leartdemaku.netlify.app"
+              href="https://github.com/LeartDemaku"
               target="_blank"
               rel="noopener noreferrer"
               variant="secondary"
@@ -146,7 +146,7 @@ export function FounderCard({ member, locale }: FounderCardProps) {
               rightIcon={<ExternalLink size={14} />}
               className="backdrop-blur-md bg-[rgb(var(--color-surface)/0.6)]"
             >
-              {locale === 'sq' ? 'Shiko Portofolin' : 'View Portfolio'}
+              {locale === 'sq' ? 'Shiko GitHub' : 'View GitHub'}
             </Button>
             <Button
               as="a"

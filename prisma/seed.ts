@@ -48,8 +48,8 @@ async function main() {
     {
       name: 'Leart Demaku',
       image: '/images/team/leart-demaku.webp',
-      linkedin: 'https://portfolio-leartdemaku.netlify.app',
-      github: 'https://github.com',
+      linkedin: 'https://linkedin.com',
+      github: 'https://github.com/LeartDemaku',
       order: 1,
       translations: [
         {

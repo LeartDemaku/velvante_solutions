@@ -1,22 +1,23 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Modal } from '@/components/ui/modal';
-import { Badge } from '@/components/ui/badge';
 import {
   Plus, Trash2, Edit3, Eye, EyeOff, Star, ExternalLink,
-  Sparkles, Loader2, Search, Filter, AlertCircle, CheckCircle2
+  Sparkles, Loader2, Search, AlertCircle, CheckCircle2,
+  UploadCloud, Globe, Image as ImageIcon, X
 } from 'lucide-react';
 
 interface ProjectItem {
   id: string;
   slug: string;
   coverImage: string;
+  liveUrl?: string;
   technologies: string[];
   featured: boolean;
   published: boolean;
@@ -27,16 +28,12 @@ interface ProjectItem {
   clientEn: string;
   industryEn: string;
   taglineEn: string;
-  challengeEn: string;
   solutionEn: string;
-  resultsEn: string;
   titleSq: string;
   clientSq: string;
   industrySq: string;
   taglineSq: string;
-  challengeSq: string;
   solutionSq: string;
-  resultsSq: string;
 }
 
 const emptyForm = {
@@ -46,20 +43,17 @@ const emptyForm = {
   clientEn: '',
   industryEn: 'Technology',
   taglineEn: '',
-  challengeEn: '',
   solutionEn: '',
-  resultsEn: '',
   titleSq: '',
   clientSq: '',
   industrySq: 'Teknologji',
   taglineSq: '',
-  challengeSq: '',
   solutionSq: '',
-  resultsSq: '',
   categorySlug: 'websites',
   technologies: 'Next.js, TypeScript, Tailwind CSS',
   year: '2025',
-  coverImage: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800',
+  coverImage: '',
+  liveUrl: '',
   published: true,
   featured: false,
 };
@@ -71,11 +65,15 @@ export default function AdminProjectsPage() {
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadError, setUploadError] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
+  const [showManualUrl, setShowManualUrl] = useState(false);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [form, setForm] = useState(emptyForm);
 
   useEffect(() => {
@@ -101,6 +99,8 @@ export default function AdminProjectsPage() {
     setForm(emptyForm);
     setErrorMsg('');
     setSuccessMsg('');
+    setUploadError('');
+    setShowManualUrl(false);
     setModalOpen(true);
   }
 
@@ -113,26 +113,60 @@ export default function AdminProjectsPage() {
       clientEn: proj.clientEn,
       industryEn: proj.industryEn || 'Technology',
       taglineEn: proj.taglineEn || '',
-      challengeEn: proj.challengeEn || '',
       solutionEn: proj.solutionEn || '',
-      resultsEn: proj.resultsEn || '',
       titleSq: proj.titleSq || '',
       clientSq: proj.clientSq || '',
       industrySq: proj.industrySq || 'Teknologji',
       taglineSq: proj.taglineSq || '',
-      challengeSq: proj.challengeSq || '',
       solutionSq: proj.solutionSq || '',
-      resultsSq: proj.resultsSq || '',
       categorySlug: proj.categorySlug || 'websites',
       technologies: Array.isArray(proj.technologies) ? proj.technologies.join(', ') : '',
       year: String(proj.year || 2025),
-      coverImage: proj.coverImage,
+      coverImage: proj.coverImage || '',
+      liveUrl: proj.liveUrl || '',
       published: proj.published,
       featured: proj.featured,
     });
     setErrorMsg('');
     setSuccessMsg('');
+    setUploadError('');
+    setShowManualUrl(Boolean(proj.coverImage && !proj.coverImage.startsWith('/uploads/')));
     setModalOpen(true);
+  }
+
+  async function handleFileUpload(file: File) {
+    if (!file.type.startsWith('image/')) {
+      setUploadError('Ju lutem ngarkoni vetëm skedarë fotografie (PNG, JPG, WebP).');
+      return;
+    }
+
+    setUploadingImage(true);
+    setUploadError('');
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.data?.url) {
+        setForm((prev) => ({ ...prev, coverImage: data.data.url }));
+      } else {
+        setUploadError(data.error?.message || 'Dështoi ngarkimi i fotos.');
+      }
+    } catch {
+      setUploadError('Ndodhi një gabim me rrjetin gjatë ngarkimit të fotos.');
+    } finally {
+      setUploadingImage(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -160,16 +194,16 @@ export default function AdminProjectsPage() {
       const resData = await res.json();
 
       if (res.ok) {
-        setSuccessMsg(isEditing ? 'Project updated successfully.' : 'Project created successfully.');
+        setSuccessMsg(isEditing ? 'Projekti u përditësua me sukses.' : 'Projekti u krijua me sukses.');
         setTimeout(() => {
           setModalOpen(false);
           fetchProjects();
         }, 800);
       } else {
-        setErrorMsg(resData.error?.message || 'Failed to save project. Please check required fields.');
+        setErrorMsg(resData.error?.message || 'Dështoi ruajtja e projektit. Kontrolloni fushat e kërkuara.');
       }
     } catch {
-      setErrorMsg('Network error occurred while saving project.');
+      setErrorMsg('Ndodhi një problem me lidhjen gjatë ruajtjes.');
     } finally {
       setSubmitting(false);
     }
@@ -238,14 +272,14 @@ export default function AdminProjectsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[rgb(var(--color-border))] pb-6">
         <div>
           <h1 className="text-2xl font-black text-[rgb(var(--color-text))] tracking-tight">
-            Manage Projects & Case Studies
+            Menaxhimi i Projekteve & Portfolio
           </h1>
           <p className="text-xs text-[rgb(var(--color-text-muted))] mt-1">
-            Create, edit, toggle visibility, and maintain bilingual portfolio case studies.
+            Krijoni, modifikoni dhe kontrolloni projektet e prezantuara në faqen publike.
           </p>
         </div>
         <Button onClick={handleOpenCreate} leftIcon={<Plus size={16} />}>
-          Add New Project
+          Shto Projekt të Ri
         </Button>
       </div>
 
@@ -254,7 +288,7 @@ export default function AdminProjectsPage() {
           <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[rgb(var(--color-text-muted))]" />
           <input
             type="text"
-            placeholder="Search projects by title, client, slug..."
+            placeholder="Kërko projekte sipas titullit, klientit, slug..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2 text-xs rounded-xl bg-[rgb(var(--color-surface))] border border-[rgb(var(--color-border))] text-[rgb(var(--color-text))] focus:outline-none focus:border-[rgb(var(--color-accent))]"
@@ -263,7 +297,7 @@ export default function AdminProjectsPage() {
 
         <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
           {[
-            { id: 'all', label: 'All Projects' },
+            { id: 'all', label: 'Të Gjitha' },
             { id: 'websites', label: 'Websites' },
             { id: 'web-applications', label: 'Web Apps' },
             { id: 'ecommerce', label: 'E-Commerce' },
@@ -287,19 +321,19 @@ export default function AdminProjectsPage() {
       {loading ? (
         <div className="py-20 flex flex-col items-center justify-center gap-3 text-[rgb(var(--color-accent-light))]">
           <Loader2 className="animate-spin" size={36} />
-          <p className="text-xs text-[rgb(var(--color-text-muted))]">Loading database records...</p>
+          <p className="text-xs text-[rgb(var(--color-text-muted))]">Po ngarkohen të dhënat e projekteve...</p>
         </div>
       ) : filteredProjects.length === 0 ? (
         <Card className="p-16 text-center space-y-4 bg-[rgb(var(--color-surface))] border-[rgb(var(--color-border))]">
           <Sparkles className="mx-auto text-[rgb(var(--color-accent-light))]" size={42} />
-          <h2 className="text-lg font-bold text-[rgb(var(--color-text))]">No projects found</h2>
+          <h2 className="text-lg font-bold text-[rgb(var(--color-text))]">Nuk u gjet asnjë projekt</h2>
           <p className="text-xs text-[rgb(var(--color-text-muted))] max-w-sm mx-auto">
             {searchTerm || activeCategory !== 'all'
-              ? 'Try adjusting your search criteria or category filter.'
-              : 'Add your first portfolio project to showcase on the public platform.'}
+              ? 'Provoni të rregulloni filtrin ose termin e kërkimit.'
+              : 'Shtoni projektin e parë në portofol për t’u shfaqur në uebsajt.'}
           </p>
           <Button onClick={handleOpenCreate} size="sm" leftIcon={<Plus size={14} />}>
-            Add Project Now
+            Shto Projekt Tani
           </Button>
         </Card>
       ) : (
@@ -310,21 +344,32 @@ export default function AdminProjectsPage() {
               className="overflow-hidden flex flex-col justify-between bg-[rgb(var(--color-surface)/0.8)] border-[rgb(var(--color-border))] hover:border-[rgb(var(--color-border-hover))] transition-all group"
             >
               <div>
-                <div className="h-48 bg-[rgb(var(--color-surface-elevated))] relative overflow-hidden">
-                  <img
-                    src={proj.coverImage}
-                    alt={proj.titleEn}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                <div className="relative w-full aspect-[16/10] overflow-hidden bg-zinc-950/80 border-b border-[rgb(var(--color-border))] flex items-center justify-center p-2 sm:p-2.5">
+                  {proj.coverImage ? (
+                    <>
+                      <div
+                        className="absolute inset-0 bg-cover bg-center blur-2xl opacity-20 pointer-events-none scale-110"
+                        style={{ backgroundImage: `url(${proj.coverImage})` }}
+                      />
+                      <img
+                        src={proj.coverImage}
+                        alt={proj.titleEn}
+                        className="relative z-10 w-full h-full object-contain rounded-xl transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+                      />
+                    </>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-[rgb(var(--color-text-muted))] bg-zinc-900/60 rounded-xl">
+                      <ImageIcon size={32} />
+                    </div>
+                  )}
 
-                  <div className="absolute top-3 left-3 flex gap-1.5">
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-semibold bg-black/60 backdrop-blur-md text-white border border-white/10 uppercase tracking-wider">
+                  <div className="absolute top-3 left-3 z-20 flex gap-1.5">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-black/70 backdrop-blur-md text-white border border-white/10 uppercase tracking-wider">
                       {proj.category}
                     </span>
                   </div>
 
-                  <div className="absolute top-3 right-3 flex items-center gap-1.5">
+                  <div className="absolute top-3 right-3 z-20 flex items-center gap-1.5">
                     <button
                       onClick={() => handleToggleFeatured(proj)}
                       className={`p-1.5 rounded-lg backdrop-blur-md transition-colors ${
@@ -350,9 +395,9 @@ export default function AdminProjectsPage() {
                     </button>
                   </div>
 
-                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-zinc-300">
-                    <span className="font-mono text-[11px] font-semibold">{proj.clientEn}</span>
-                    <span className="font-mono text-[11px] bg-black/40 px-2 py-0.5 rounded text-zinc-400">
+                  <div className="absolute bottom-2.5 left-3 right-3 z-20 flex items-center justify-between text-xs text-zinc-300 pointer-events-none">
+                    <span className="font-mono text-[11px] font-semibold bg-black/70 px-2 py-0.5 rounded backdrop-blur-md border border-white/10">{proj.clientEn}</span>
+                    <span className="font-mono text-[11px] bg-black/70 px-2 py-0.5 rounded text-zinc-300 backdrop-blur-md border border-white/10">
                       {proj.year}
                     </span>
                   </div>
@@ -394,28 +439,44 @@ export default function AdminProjectsPage() {
                 </div>
               </div>
 
-              <div className="p-4 border-t border-[rgb(var(--color-border))] flex items-center justify-between bg-[rgb(var(--color-surface-elevated)/0.3)]">
-                <Link
-                  href={`/en/projects/${proj.slug}`}
-                  target="_blank"
-                  className="flex items-center gap-1.5 text-[11px] font-mono text-[rgb(var(--color-accent-light))] hover:underline"
-                >
-                  <span>/{proj.slug}</span>
-                  <ExternalLink size={12} />
-                </Link>
+              <div className="p-4 border-t border-[rgb(var(--color-border))] flex items-center justify-between bg-[rgb(var(--color-surface-elevated)/0.3)] gap-2">
+                <div className="flex items-center gap-2 overflow-hidden">
+                  {proj.liveUrl ? (
+                    <a
+                      href={proj.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/25 transition-all shrink-0"
+                      title="Hap projektin live në dritare të re"
+                    >
+                      <Globe size={12} />
+                      <span>Live Project</span>
+                      <ExternalLink size={10} />
+                    </a>
+                  ) : null}
 
-                <div className="flex items-center gap-1">
+                  <Link
+                    href={`/en/projects/${proj.slug}`}
+                    target="_blank"
+                    className="flex items-center gap-1 text-[11px] font-mono text-[rgb(var(--color-accent-light))] hover:underline truncate"
+                  >
+                    <span>/{proj.slug}</span>
+                    <ExternalLink size={11} className="shrink-0" />
+                  </Link>
+                </div>
+
+                <div className="flex items-center gap-1 shrink-0">
                   <button
                     onClick={() => handleOpenEdit(proj)}
                     className="p-1.5 rounded-lg text-[rgb(var(--color-text-muted))] hover:text-white hover:bg-[rgb(var(--color-surface-elevated))] transition-colors"
-                    title="Edit project details"
+                    title="Ndrysho të dhënat"
                   >
                     <Edit3 size={15} />
                   </button>
                   <button
                     onClick={() => setDeleteConfirmId(proj.id)}
                     className="p-1.5 rounded-lg text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
-                    title="Delete project"
+                    title="Fshij projektin"
                   >
                     <Trash2 size={15} />
                   </button>
@@ -430,16 +491,16 @@ export default function AdminProjectsPage() {
         <Modal
           open={Boolean(deleteConfirmId)}
           onClose={() => setDeleteConfirmId(null)}
-          title="Confirm Project Deletion"
+          title="Konfirmo Fshirjen e Projektit"
           size="sm"
         >
           <div className="space-y-4">
             <p className="text-xs text-[rgb(var(--color-text-muted))] leading-relaxed">
-              Are you sure you want to remove this project? It will be archived and hidden from both English and Albanian portfolio listings.
+              Jeni të sigurt që dëshironi ta fshini këtë projekt? Ai do të fshihet nga listat e projekteve në uebsajt.
             </p>
             <div className="flex justify-end gap-3 pt-3 border-t border-[rgb(var(--color-border))]">
               <Button variant="secondary" size="sm" onClick={() => setDeleteConfirmId(null)}>
-                Cancel
+                Anulo
               </Button>
               <Button
                 variant="primary"
@@ -447,7 +508,7 @@ export default function AdminProjectsPage() {
                 className="bg-red-600 hover:bg-red-500 text-white"
                 onClick={() => handleDelete(deleteConfirmId)}
               >
-                Confirm Delete
+                Konfirmo Fshirjen
               </Button>
             </div>
           </div>
@@ -457,7 +518,7 @@ export default function AdminProjectsPage() {
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={isEditing ? `Edit Project: ${form.titleEn}` : 'Add New Portfolio Project'}
+        title={isEditing ? `Modifiko Projektin: ${form.titleEn}` : 'Shto Projekt të Ri në Portofol'}
         size="lg"
       >
         <form onSubmit={handleSubmit} className="space-y-5 max-h-[75vh] overflow-y-auto pr-1">
@@ -477,12 +538,12 @@ export default function AdminProjectsPage() {
 
           <div className="space-y-4">
             <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[rgb(var(--color-accent-light))]">
-              1. Basic Identification
+              1. Identifikimi Bazë
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
-                label="Project Title (English)"
-                placeholder="e.g. Meridian Financial Dashboard"
+                label="Titulli i Projektit (Anglisht)"
+                placeholder="p.sh. Meridian Financial Platform"
                 required
                 value={form.titleEn}
                 onChange={(e) => {
@@ -497,8 +558,8 @@ export default function AdminProjectsPage() {
                 }}
               />
               <Input
-                label="Project Title (Albanian - Shqip)"
-                placeholder="e.g. Paneli Financiar Meridian"
+                label="Titulli i Projektit (Shqip)"
+                placeholder="p.sh. Platforma Financiare Meridian"
                 value={form.titleSq}
                 onChange={(e) => setForm((f) => ({ ...f, titleSq: e.target.value }))}
               />
@@ -506,49 +567,58 @@ export default function AdminProjectsPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
-                label="URL Slug (Permanent link)"
-                placeholder="meridian-financial-dashboard"
+                label="URL Slug (Linku unik)"
+                placeholder="meridian-financial-platform"
                 required
                 value={form.slug}
                 onChange={(e) => setForm((f) => ({ ...f, slug: e.target.value }))}
               />
               <div>
                 <label className="block text-xs font-medium text-[rgb(var(--color-text))] mb-1.5">
-                  Category
+                  Kategoria
                 </label>
                 <select
                   value={form.categorySlug}
                   onChange={(e) => setForm((f) => ({ ...f, categorySlug: e.target.value }))}
                   className="w-full px-3.5 py-2.5 text-xs rounded-xl bg-[rgb(var(--color-surface))] border border-[rgb(var(--color-border))] text-[rgb(var(--color-text))] focus:outline-none focus:border-[rgb(var(--color-accent))]"
                 >
-                  <option value="websites">Websites / Corporate</option>
+                  <option value="websites">Websites / Korporative</option>
                   <option value="web-applications">Web Applications (SaaS)</option>
                   <option value="ecommerce">E-Commerce</option>
-                  <option value="custom-software">Custom Software & APIs</option>
+                  <option value="custom-software">Custom Software & API</option>
                 </select>
               </div>
             </div>
+
+            <Input
+              label="Linku i Projektit Live (URL)"
+              placeholder="https://klienti-juaj.com"
+              value={form.liveUrl}
+              onChange={(e) => setForm((f) => ({ ...f, liveUrl: e.target.value }))}
+              leftIcon={<Globe size={15} />}
+              hint="Linku direkt ku klienti apo vizitori mund ta hapë dhe shohë faqen/aplikacionin live."
+            />
           </div>
 
           <div className="space-y-4 pt-2 border-t border-[rgb(var(--color-border))]">
             <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[rgb(var(--color-accent-light))]">
-              2. Client & Specifications
+              2. Detajet & Ngarkimi i Fotos (Screenshot)
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <Input
-                label="Client Name"
-                placeholder="e.g. Meridian Group"
+                label="Emri i Klientit"
+                placeholder="p.sh. Meridian Group"
                 value={form.clientEn}
                 onChange={(e) => setForm((f) => ({ ...f, clientEn: e.target.value, clientSq: f.clientSq || e.target.value }))}
               />
               <Input
-                label="Industry"
-                placeholder="e.g. Fintech, Healthcare"
+                label="Industria"
+                placeholder="p.sh. Fintech, Healthcare"
                 value={form.industryEn}
                 onChange={(e) => setForm((f) => ({ ...f, industryEn: e.target.value }))}
               />
               <Input
-                label="Year Completed"
+                label="Viti i Përfundimit"
                 placeholder="2025"
                 value={form.year}
                 onChange={(e) => setForm((f) => ({ ...f, year: e.target.value }))}
@@ -556,47 +626,138 @@ export default function AdminProjectsPage() {
             </div>
 
             <Input
-              label="Technologies (comma separated tags)"
+              label="Teknologjitë e Përdorura (të ndara me presje)"
               placeholder="Next.js 15, TypeScript, Tailwind CSS, PostgreSQL, Prisma"
               value={form.technologies}
               onChange={(e) => setForm((f) => ({ ...f, technologies: e.target.value }))}
             />
 
-            <div>
-              <Input
-                label="Cover Image URL"
-                placeholder="https://images.unsplash.com/photo-..."
-                value={form.coverImage}
-                onChange={(e) => setForm((f) => ({ ...f, coverImage: e.target.value }))}
+            <div className="space-y-2">
+              <label className="block text-xs font-medium text-[rgb(var(--color-text))]">
+                Foto / Screenshot i Projektit
+              </label>
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleFileUpload(file);
+                }}
               />
-              {form.coverImage && (
-                <div className="mt-2 h-28 w-full rounded-xl overflow-hidden bg-[rgb(var(--color-surface-elevated))] border border-[rgb(var(--color-border))]">
-                  <img
-                    src={form.coverImage}
-                    alt="Preview"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
-                    }}
-                  />
+
+              {form.coverImage ? (
+                <div className="relative rounded-2xl overflow-hidden border border-[rgb(var(--color-border))] bg-zinc-950/90 group p-2">
+                  <div className="relative w-full aspect-[16/10] overflow-hidden flex items-center justify-center bg-black/40 rounded-xl">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center blur-2xl opacity-20 pointer-events-none scale-110"
+                      style={{ backgroundImage: `url(${form.coverImage})` }}
+                    />
+                    <img
+                      src={form.coverImage}
+                      alt="Project Screenshot Preview"
+                      className="relative z-10 w-full h-full object-contain"
+                    />
+                  </div>
+                  <div className="p-3 bg-[rgb(var(--color-surface))] flex items-center justify-between border-t border-[rgb(var(--color-border))] text-xs">
+                    <span className="font-mono text-[11px] text-[rgb(var(--color-text-muted))] truncate max-w-[220px]">
+                      {form.coverImage}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploadingImage}
+                        leftIcon={uploadingImage ? <Loader2 className="animate-spin" size={12} /> : <UploadCloud size={12} />}
+                      >
+                        Ndrysho Foton
+                      </Button>
+                      <button
+                        type="button"
+                        onClick={() => setForm((f) => ({ ...f, coverImage: '' }))}
+                        className="p-1.5 rounded-lg text-red-400 hover:bg-red-500/10 transition-colors"
+                        title="Hiq foton"
+                      >
+                        <X size={15} />
+                      </button>
+                    </div>
+                  </div>
                 </div>
+              ) : (
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const file = e.dataTransfer.files?.[0];
+                    if (file) handleFileUpload(file);
+                  }}
+                  className="border-2 border-dashed border-[rgb(var(--color-border))] hover:border-[rgb(var(--color-accent))] rounded-2xl p-6 sm:p-8 text-center cursor-pointer transition-all bg-[rgb(var(--color-surface)/0.5)] hover:bg-[rgb(var(--color-surface))]"
+                >
+                  <div className="flex flex-col items-center justify-center gap-2">
+                    <div className="w-12 h-12 rounded-xl bg-[rgb(var(--color-accent)/0.1)] text-[rgb(var(--color-accent-light))] flex items-center justify-center">
+                      {uploadingImage ? (
+                        <Loader2 className="animate-spin" size={24} />
+                      ) : (
+                        <UploadCloud size={24} />
+                      )}
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-xs font-semibold text-[rgb(var(--color-text))]">
+                        {uploadingImage ? 'Po ngarkohet fotografia...' : 'Kliko ose tërhiq foton / screenshot këtu'}
+                      </p>
+                      <p className="text-[11px] text-[rgb(var(--color-text-muted))]">
+                        Mbështet PNG, JPG, WebP deri në 15MB
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {uploadError && (
+                <p className="text-xs text-red-400 flex items-center gap-1.5 pt-1">
+                  <AlertCircle size={13} />
+                  <span>{uploadError}</span>
+                </p>
+              )}
+
+              <div className="pt-1 flex items-center justify-between">
+                <button
+                  type="button"
+                  onClick={() => setShowManualUrl(!showManualUrl)}
+                  className="text-[11px] text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-accent-light))] transition-colors"
+                >
+                  {showManualUrl ? 'Fshih linkun manual të fotos' : 'Ose vendos linkun e fotos manualisht (URL)'}
+                </button>
+              </div>
+
+              {showManualUrl && (
+                <Input
+                  placeholder="https://images.unsplash.com/..."
+                  value={form.coverImage}
+                  onChange={(e) => setForm((f) => ({ ...f, coverImage: e.target.value }))}
+                />
               )}
             </div>
           </div>
 
           <div className="space-y-4 pt-2 border-t border-[rgb(var(--color-border))]">
             <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-[rgb(var(--color-accent-light))]">
-              3. Case Study Story (EN & SQ)
+              3. Përshkrimi & Zgjidhja e Projektit
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Input
-                label="Tagline (English)"
+                label="Tagline (Anglisht)"
                 placeholder="High-frequency financial reporting platform"
                 value={form.taglineEn}
                 onChange={(e) => setForm((f) => ({ ...f, taglineEn: e.target.value }))}
               />
               <Input
-                label="Tagline (Albanian)"
+                label="Tagline (Shqip)"
                 placeholder="Platformë raportimi financiar me shpejtësi të lartë"
                 value={form.taglineSq}
                 onChange={(e) => setForm((f) => ({ ...f, taglineSq: e.target.value }))}
@@ -605,50 +766,18 @@ export default function AdminProjectsPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Textarea
-                label="The Challenge (English)"
-                placeholder="What bottlenecks or issues was the client facing?"
-                rows={3}
-                value={form.challengeEn}
-                onChange={(e) => setForm((f) => ({ ...f, challengeEn: e.target.value }))}
-              />
-              <Textarea
-                label="The Challenge (Albanian)"
-                placeholder="Me çfarë problemesh po përballej klienti?"
-                rows={3}
-                value={form.challengeSq}
-                onChange={(e) => setForm((f) => ({ ...f, challengeSq: e.target.value }))}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Textarea
-                label="The Solution (English)"
-                placeholder="How did Velvante Solutions engineer the digital system?"
+                label="Zgjidhja / Përshkrimi i Projektit (Anglisht)"
+                placeholder="Describe how the solution was engineered and delivered..."
                 rows={3}
                 value={form.solutionEn}
                 onChange={(e) => setForm((f) => ({ ...f, solutionEn: e.target.value }))}
               />
               <Textarea
-                label="The Solution (Albanian)"
-                placeholder="Si e inxhinieroi ekipi ynë zgjidhjen?"
+                label="Zgjidhja / Përshkrimi i Projektit (Shqip)"
+                placeholder="Përshkruani se si u inxhinierua dhe u implementua zgjidhja..."
                 rows={3}
                 value={form.solutionSq}
                 onChange={(e) => setForm((f) => ({ ...f, solutionSq: e.target.value }))}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <Input
-                label="Measurable Results (English)"
-                placeholder="e.g. +140% user engagement, 80% query speedup"
-                value={form.resultsEn}
-                onChange={(e) => setForm((f) => ({ ...f, resultsEn: e.target.value }))}
-              />
-              <Input
-                label="Measurable Results (Albanian)"
-                placeholder="e.g. +140% angazhim përdoruesish, 80% shpejtësi"
-                value={form.resultsSq}
-                onChange={(e) => setForm((f) => ({ ...f, resultsSq: e.target.value }))}
               />
             </div>
           </div>
@@ -662,7 +791,7 @@ export default function AdminProjectsPage() {
                   onChange={(e) => setForm((f) => ({ ...f, published: e.target.checked }))}
                   className="rounded border-[rgb(var(--color-border))] text-[rgb(var(--color-accent))] focus:ring-0"
                 />
-                <span>Published (Live)</span>
+                <span>Publikuar (Live)</span>
               </label>
 
               <label className="flex items-center gap-2 cursor-pointer text-xs text-[rgb(var(--color-text))]">
@@ -672,16 +801,16 @@ export default function AdminProjectsPage() {
                   onChange={(e) => setForm((f) => ({ ...f, featured: e.target.checked }))}
                   className="rounded border-[rgb(var(--color-border))] text-[rgb(var(--color-accent))] focus:ring-0"
                 />
-                <span>Featured (Homepage)</span>
+                <span>Kryesor (Faqja Kryesore)</span>
               </label>
             </div>
 
             <div className="flex gap-3">
               <Button variant="secondary" type="button" onClick={() => setModalOpen(false)}>
-                Cancel
+                Anulo
               </Button>
               <Button type="submit" loading={submitting}>
-                {isEditing ? 'Save Changes' : 'Create Project'}
+                {isEditing ? 'Ruaj Ndryshimet' : 'Krijo Projektin'}
               </Button>
             </div>
           </div>

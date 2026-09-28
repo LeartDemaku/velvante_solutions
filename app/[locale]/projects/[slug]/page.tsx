@@ -4,7 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, ChevronLeft, Calendar, Building, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, ChevronLeft, Calendar, Building, CheckCircle2, ExternalLink } from 'lucide-react';
 import { prisma } from '@/lib/db/client';
 import { toStringArray } from '@/lib/utils';
 
@@ -35,6 +35,7 @@ export default async function CaseStudyPage({
         id: raw.id,
         slug: raw.slug,
         coverImage: raw.coverImage,
+        liveUrl: raw.liveUrl,
         images: toStringArray(raw.images),
         technologies: toStringArray(raw.technologies),
         year: raw.year,
@@ -87,43 +88,72 @@ export default async function CaseStudyPage({
             <span className="font-semibold text-[rgb(var(--color-text))] mt-1 block">{project.year}</span>
           </div>
         </div>
+
+        {project.liveUrl && (
+          <div className="pt-2">
+            <Button
+              as="a"
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="secondary"
+              rightIcon={<ExternalLink size={14} />}
+            >
+              {locale === 'sq' ? 'Vizito Projektin Live' : 'Visit Live Project'}
+            </Button>
+          </div>
+        )}
       </div>
 
-      <div className="rounded-[var(--radius-xl)] overflow-hidden h-64 sm:h-80 md:h-[450px] bg-[rgb(var(--color-surface-elevated))] border border-[rgb(var(--color-border))]">
-        <img src={project.coverImage} alt={project.title} className="w-full h-full object-cover" />
+      <div className="relative rounded-[var(--radius-2xl)] overflow-hidden border border-[rgb(var(--color-border))] bg-zinc-950/80 shadow-2xl backdrop-blur-xl p-2 sm:p-4 md:p-6">
+        <div
+          className="absolute inset-0 bg-cover bg-center blur-3xl opacity-20 pointer-events-none scale-105"
+          style={{ backgroundImage: `url(${project.coverImage})` }}
+        />
+        <img
+          src={project.coverImage}
+          alt={project.title}
+          className="relative z-10 w-full h-auto max-h-[85vh] object-contain rounded-[var(--radius-xl)] mx-auto block shadow-2xl"
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
         <div className="lg:col-span-8 space-y-8 sm:space-y-12">
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-[rgb(var(--color-text))] flex items-center gap-2">
-              <span className="w-2 h-6 bg-[rgb(var(--color-accent))] rounded-full" />
-              {tProjects('caseStudy.challenge')}
-            </h2>
-            <p className="text-body-md text-[rgb(var(--color-text-muted))] leading-relaxed whitespace-pre-wrap">
-              {project.challenge}
-            </p>
-          </div>
+          {project.challenge ? (
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold text-[rgb(var(--color-text))] flex items-center gap-2">
+                <span className="w-2 h-6 bg-[rgb(var(--color-accent))] rounded-full" />
+                {tProjects('caseStudy.challenge')}
+              </h2>
+              <p className="text-body-md text-[rgb(var(--color-text-muted))] leading-relaxed whitespace-pre-wrap">
+                {project.challenge}
+              </p>
+            </div>
+          ) : null}
 
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-[rgb(var(--color-text))] flex items-center gap-2">
-              <span className="w-2 h-6 bg-indigo-500 rounded-full" />
-              {tProjects('caseStudy.solution')}
-            </h2>
-            <p className="text-body-md text-[rgb(var(--color-text-muted))] leading-relaxed whitespace-pre-wrap">
-              {project.solution}
-            </p>
-          </div>
+          {project.solution ? (
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold text-[rgb(var(--color-text))] flex items-center gap-2">
+                <span className="w-2 h-6 bg-indigo-500 rounded-full" />
+                {tProjects('caseStudy.solution')}
+              </h2>
+              <p className="text-body-md text-[rgb(var(--color-text-muted))] leading-relaxed whitespace-pre-wrap">
+                {project.solution}
+              </p>
+            </div>
+          ) : null}
 
-          <div className="p-6 sm:p-8 rounded-[var(--radius-xl)] bg-[rgb(var(--color-surface))] border border-[rgb(var(--color-accent)/0.3)] space-y-4 glow-accent-sm">
-            <h2 className="text-2xl font-bold text-[rgb(var(--color-text))] text-green-400 flex items-center gap-2">
-              <CheckCircle2 size={24} />
-              {tProjects('caseStudy.results')}
-            </h2>
-            <p className="text-body-md text-[rgb(var(--color-text))] leading-relaxed whitespace-pre-wrap">
-              {project.results}
-            </p>
-          </div>
+          {project.results ? (
+            <div className="p-6 sm:p-8 rounded-[var(--radius-xl)] bg-[rgb(var(--color-surface))] border border-[rgb(var(--color-accent)/0.3)] space-y-4 glow-accent-sm">
+              <h2 className="text-2xl font-bold text-[rgb(var(--color-text))] text-green-400 flex items-center gap-2">
+                <CheckCircle2 size={24} />
+                {tProjects('caseStudy.results')}
+              </h2>
+              <p className="text-body-md text-[rgb(var(--color-text))] leading-relaxed whitespace-pre-wrap">
+                {project.results}
+              </p>
+            </div>
+          ) : null}
         </div>
 
         <div className="lg:col-span-4 space-y-6">

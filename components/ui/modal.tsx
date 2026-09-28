@@ -24,12 +24,17 @@ const sizeClasses = {
 
 export function Modal({ open, onClose, title, description, children, size = 'md', className }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   useEffect(() => {
     if (!open) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') onCloseRef.current();
 
       if (e.key === 'Tab') {
         const focusableElements = panelRef.current?.querySelectorAll<HTMLElement>(
@@ -55,13 +60,16 @@ export function Modal({ open, onClose, title, description, children, size = 'md'
 
     document.addEventListener('keydown', handleKeyDown);
     document.body.style.overflow = 'hidden';
-    panelRef.current?.focus();
+
+    if (panelRef.current && !panelRef.current.contains(document.activeElement)) {
+      panelRef.current.focus();
+    }
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
 
