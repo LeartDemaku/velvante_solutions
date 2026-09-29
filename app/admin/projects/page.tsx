@@ -110,12 +110,12 @@ export default function AdminProjectsPage() {
       id: proj.id,
       slug: proj.slug,
       titleEn: proj.titleEn,
-      clientEn: proj.clientEn,
+      clientEn: proj.clientEn || proj.clientSq || '',
       industryEn: proj.industryEn || 'Technology',
       taglineEn: proj.taglineEn || '',
       solutionEn: proj.solutionEn || '',
       titleSq: proj.titleSq || '',
-      clientSq: proj.clientSq || '',
+      clientSq: proj.clientSq || proj.clientEn || '',
       industrySq: proj.industrySq || 'Teknologji',
       taglineSq: proj.taglineSq || '',
       solutionSq: proj.solutionSq || '',
@@ -606,10 +606,14 @@ export default function AdminProjectsPage() {
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <Input
-                label="Emri i Klientit"
-                placeholder="p.sh. Meridian Group"
+                label="Emri i Klientit / Kompanisë (Teksti sipër titullit)"
+                placeholder="p.sh. WorkPulse, Vantalyra, Avana Villas"
                 value={form.clientEn}
-                onChange={(e) => setForm((f) => ({ ...f, clientEn: e.target.value, clientSq: f.clientSq || e.target.value }))}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setForm((f) => ({ ...f, clientEn: val, clientSq: val }));
+                }}
+                hint="Ky emër shfaqet me shkronja kapitale sipër titullit në kartat e projekteve."
               />
               <Input
                 label="Industria"

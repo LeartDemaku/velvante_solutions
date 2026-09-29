@@ -136,6 +136,13 @@ export async function PUT(
       },
     });
 
+    const effectiveClientEn = clientEn !== undefined ? String(clientEn).trim() : undefined;
+    const effectiveClientSq = (clientSq !== undefined && String(clientSq).trim().length > 1)
+      ? String(clientSq).trim()
+      : (effectiveClientEn !== undefined && effectiveClientEn.length > 0)
+        ? effectiveClientEn
+        : (clientSq !== undefined ? String(clientSq).trim() : undefined);
+
     if (titleEn !== undefined) {
       await prisma.projectTranslation.upsert({
         where: {
@@ -148,7 +155,7 @@ export async function PUT(
           projectId: id,
           locale: 'en',
           title: String(titleEn).trim(),
-          client: clientEn || 'Client',
+          client: effectiveClientEn || 'Client',
           industry: industryEn || 'Technology',
           tagline: taglineEn || titleEn,
           challenge: challengeEn || '',
@@ -159,7 +166,7 @@ export async function PUT(
         },
         update: {
           title: String(titleEn).trim(),
-          client: clientEn ?? undefined,
+          client: effectiveClientEn ?? undefined,
           industry: industryEn ?? undefined,
           tagline: taglineEn ?? undefined,
           challenge: challengeEn !== undefined ? challengeEn : undefined,
@@ -184,7 +191,7 @@ export async function PUT(
           projectId: id,
           locale: 'sq',
           title: sqTitle,
-          client: clientSq || clientEn || 'Klienti',
+          client: effectiveClientSq || effectiveClientEn || 'Klienti',
           industry: industrySq || industryEn || 'Teknologji',
           tagline: taglineSq || taglineEn || sqTitle,
           challenge: challengeSq || '',
@@ -195,7 +202,7 @@ export async function PUT(
         },
         update: {
           title: sqTitle,
-          client: clientSq ?? undefined,
+          client: effectiveClientSq ?? effectiveClientEn ?? undefined,
           industry: industrySq ?? undefined,
           tagline: taglineSq ?? undefined,
           challenge: challengeSq !== undefined ? challengeSq : undefined,

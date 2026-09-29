@@ -63,7 +63,7 @@ export default async function HomePage({
         orderBy: { order: 'asc' },
         include: {
           category: true,
-          translations: { where: { locale } },
+          translations: true,
         },
       }),
       prisma.service.findMany({
@@ -84,17 +84,21 @@ export default async function HomePage({
       }),
     ]);
 
-    featuredProjects = rawProjects.map((p) => ({
-      id: p.id,
-      slug: p.slug,
-      coverImage: p.coverImage,
-      technologies: toStringArray(p.technologies),
-      year: p.year,
-      title: p.translations[0]?.title ?? 'Project',
-      tagline: p.translations[0]?.tagline ?? '',
-      client: p.translations[0]?.client ?? '',
-      categoryName: locale === 'sq' ? p.category.nameAl : p.category.name,
-    }));
+    featuredProjects = rawProjects.map((p) => {
+      const tr = p.translations.find((t) => t.locale === locale) || p.translations[0];
+      const fallbackClient = p.translations.find((t) => t.client && t.client.trim().length > 1)?.client || '';
+      return {
+        id: p.id,
+        slug: p.slug,
+        coverImage: p.coverImage,
+        technologies: toStringArray(p.technologies),
+        year: p.year,
+        title: tr?.title ?? 'Project',
+        tagline: tr?.tagline ?? '',
+        client: (tr?.client && tr.client.trim().length > 1) ? tr.client.trim() : (fallbackClient || tr?.client || ''),
+        categoryName: locale === 'sq' ? p.category.nameAl : p.category.name,
+      };
+    });
 
     servicesList = rawServices.map((s) => ({
       id: s.id,

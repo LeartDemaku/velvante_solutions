@@ -26,28 +26,32 @@ export default async function CaseStudyPage({
       where: { slug, published: true, deletedAt: null },
       include: {
         category: true,
-        translations: { where: { locale } },
+        translations: true,
       },
     });
 
-    if (raw && raw.translations[0]) {
-      project = {
-        id: raw.id,
-        slug: raw.slug,
-        coverImage: raw.coverImage,
-        liveUrl: raw.liveUrl,
-        images: toStringArray(raw.images),
-        technologies: toStringArray(raw.technologies),
-        year: raw.year,
-        categoryName: locale === 'sq' ? raw.category.nameAl : raw.category.name,
-        title: raw.translations[0].title,
-        client: raw.translations[0].client,
-        industry: raw.translations[0].industry,
-        tagline: raw.translations[0].tagline,
-        challenge: raw.translations[0].challenge,
-        solution: raw.translations[0].solution,
-        results: raw.translations[0].results,
-      };
+    if (raw) {
+      const tr = raw.translations.find((t) => t.locale === locale) || raw.translations[0];
+      const fallbackClient = raw.translations.find((t) => t.client && t.client.trim().length > 1)?.client || '';
+      if (tr) {
+        project = {
+          id: raw.id,
+          slug: raw.slug,
+          coverImage: raw.coverImage,
+          liveUrl: raw.liveUrl,
+          images: toStringArray(raw.images),
+          technologies: toStringArray(raw.technologies),
+          year: raw.year,
+          categoryName: locale === 'sq' ? raw.category.nameAl : raw.category.name,
+          title: tr.title,
+          client: (tr.client && tr.client.trim().length > 1) ? tr.client.trim() : (fallbackClient || tr.client || ''),
+          industry: tr.industry,
+          tagline: tr.tagline,
+          challenge: tr.challenge,
+          solution: tr.solution,
+          results: tr.results,
+        };
+      }
     }
   } catch (err) {
     console.error('Failed to load project case study:', err);

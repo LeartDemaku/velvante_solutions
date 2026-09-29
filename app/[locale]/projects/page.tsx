@@ -33,21 +33,25 @@ export default async function ProjectsPage({
       orderBy: [{ featured: 'desc' }, { order: 'asc' }],
       include: {
         category: true,
-        translations: { where: { locale } },
+        translations: true,
       },
     });
 
-    projects = raw.map((p) => ({
-      id: p.id,
-      slug: p.slug,
-      coverImage: p.coverImage,
-      technologies: toStringArray(p.technologies),
-      year: p.year,
-      title: p.translations[0]?.title ?? 'Project',
-      tagline: p.translations[0]?.tagline ?? '',
-      client: p.translations[0]?.client ?? '',
-      categoryName: locale === 'sq' ? p.category.nameAl : p.category.name,
-    }));
+    projects = raw.map((p) => {
+      const tr = p.translations.find((t) => t.locale === locale) || p.translations[0];
+      const fallbackClient = p.translations.find((t) => t.client && t.client.trim().length > 1)?.client || '';
+      return {
+        id: p.id,
+        slug: p.slug,
+        coverImage: p.coverImage,
+        technologies: toStringArray(p.technologies),
+        year: p.year,
+        title: tr?.title ?? 'Project',
+        tagline: tr?.tagline ?? '',
+        client: (tr?.client && tr.client.trim().length > 1) ? tr.client.trim() : (fallbackClient || tr?.client || ''),
+        categoryName: locale === 'sq' ? p.category.nameAl : p.category.name,
+      };
+    });
   } catch (err) {
     console.error('Failed to load projects:', err);
   }

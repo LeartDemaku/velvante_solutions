@@ -124,6 +124,11 @@ export async function POST(request: NextRequest) {
       finalTechs = ['Next.js', 'TypeScript', 'Tailwind CSS'];
     }
 
+    const finalClientEn = clientEn ? String(clientEn).trim() : 'Client';
+    const finalClientSq = (clientSq && String(clientSq).trim().length > 1)
+      ? String(clientSq).trim()
+      : (finalClientEn || 'Klienti');
+
     const created = await prisma.project.create({
       data: {
         slug: cleanSlug,
@@ -139,7 +144,7 @@ export async function POST(request: NextRequest) {
             {
               locale: 'en',
               title: String(titleEn).trim(),
-              client: clientEn || 'Client',
+              client: finalClientEn,
               industry: industryEn || 'Technology',
               tagline: taglineEn || titleEn,
               challenge: challengeEn || '',
@@ -151,7 +156,7 @@ export async function POST(request: NextRequest) {
             {
               locale: 'sq',
               title: titleSq ? String(titleSq).trim() : String(titleEn).trim(),
-              client: clientSq || clientEn || 'Klienti',
+              client: finalClientSq,
               industry: industrySq || industryEn || 'Teknologji',
               tagline: taglineSq || taglineEn || titleEn,
               challenge: challengeSq || '',
