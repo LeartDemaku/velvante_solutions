@@ -50,18 +50,12 @@ export function FounderCard({ member, locale }: FounderCardProps) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </div>
 
-            <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap px-4 py-1.5 rounded-full bg-[rgb(var(--color-surface))] border border-[rgb(var(--color-accent)/0.5)] shadow-lg flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="absolute -bottom-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap px-4 py-1.5 rounded-full bg-[rgb(var(--color-surface))] border border-[rgb(var(--color-accent)/0.5)] shadow-lg flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
               <span className="text-xs font-bold text-[rgb(var(--color-text))] font-mono">
-                {locale === 'sq' ? 'Themelues & CEO' : 'Founder & CEO'}
+                {locale === 'sq' ? 'Themelues dhe Drejtor Ekzekutiv i Velvante Solutions' : 'Founder & CEO of Velvante Solutions'}
               </span>
             </div>
-          </div>
-
-          <div className="mt-7 w-full max-w-xs space-y-1">
-            <p className="text-xs font-mono text-[rgb(var(--color-accent-light))] uppercase tracking-wider font-semibold">
-              {member.role}
-            </p>
           </div>
         </div>
 
