@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard, FolderKanban, Wrench, FileText, MessageSquare,
-  Mail, Image as ImageIcon, Users, Settings, LogOut, Menu, X, Shield, ExternalLink
+  Mail, Users, Settings, LogOut, Menu, X, Shield, ExternalLink
 } from 'lucide-react';
 import { LogoIcon } from '@/components/ui/logo';
 import { Badge } from '@/components/ui/badge';
@@ -52,7 +52,6 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     { label: 'Blog Posts', href: '/admin/blog', icon: FileText },
     { label: 'Leads / Inquiries', href: '/admin/leads', icon: Mail },
     { label: 'Testimonials', href: '/admin/testimonials', icon: MessageSquare },
-    { label: 'Media Manager', href: '/admin/media', icon: ImageIcon },
     { label: 'Users & Roles', href: '/admin/users', icon: Users },
     { label: 'Settings', href: '/admin/settings', icon: Settings },
   ];

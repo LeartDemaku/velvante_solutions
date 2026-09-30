@@ -39,7 +39,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    await sendContactNotification(data);
+    const { getSiteSettings } = await import('@/lib/settings/service');
+    const settings = await getSiteSettings();
+    await sendContactNotification(data, settings.notificationEmail);
     await sendAutoReply(data.email, data.name, data.locale);
   } catch (emailErr) {
     console.error('[contact/route] Email send notification:', emailErr);

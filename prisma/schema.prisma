@@ -392,3 +392,16 @@ model TeamMemberTranslation {
   @@unique([memberId, locale])
   @@map("team_member_translations")
 }
+
+model SystemSetting {
+  id                String   @id @default("default")
+  siteName          String   @default("Velvante Solutions")
+  notificationEmail String   @default("velvantesolutions@outlook.com")
+  contactPhone      String   @default("+383 45 319 619")
+  primaryLocation   String   @default("Pristina, Kosovo")
+  primaryLocationSq String   @default("Prishtinë, Kosovë")
+  updatedAt         DateTime @updatedAt
+
+  @@map("system_settings")
+}
+

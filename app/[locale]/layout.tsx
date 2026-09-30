@@ -9,6 +9,7 @@ import { Footer } from '@/components/layout/footer';
 import { CookieBanner } from '@/components/layout/cookie-banner';
 import { BackToTop } from '@/components/layout/back-to-top';
 import { ToastProvider } from '@/components/ui/toast';
+import { getSiteSettings } from '@/lib/settings/service';
 import '@/app/globals.css';
 
 const inter = Inter({
@@ -126,7 +127,10 @@ export default async function LocaleLayout({
   }
 
   setRequestLocale(locale);
-  const messages = await getMessages();
+  const [messages, settings] = await Promise.all([
+    getMessages(),
+    getSiteSettings(),
+  ]);
 
   return (
     <html lang={locale} className={`${inter.variable} ${mono.variable}`} suppressHydrationWarning>
@@ -135,7 +139,7 @@ export default async function LocaleLayout({
           <ToastProvider>
             <Navbar />
             <main className="flex-1">{children}</main>
-            <Footer />
+            <Footer settings={settings} />
             <CookieBanner />
             <BackToTop />
           </ToastProvider>

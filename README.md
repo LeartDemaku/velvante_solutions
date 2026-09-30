@@ -187,7 +187,7 @@ Built directly into the application for autonomous operational management:
 - **Blog Publisher (`/admin/blog`)**: Full rich article drafting, publishing workflow, and category management.
 - **Service Offering Editor (`/admin/services`)**: Adjust service titles, descriptions, and feature lists.
 - **Testimonial Moderation (`/admin/testimonials`)**: Review and toggle client endorsements.
-- **Media Asset Manager (`/admin/media`)**: Image upload management and asset storage.
+- **Global Settings (`/admin/settings`)**: Live website configuration (contact phone number, notification email, primary location, site name) and real-time SMTP delivery testing.
 - **Mobile-Ready Admin Layout**: Horizontal scrolling responsive navigation allowing full administrative control directly from a smartphone.
 
 ### 9. Dark Neo-Canvas Design System

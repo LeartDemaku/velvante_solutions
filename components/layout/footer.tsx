@@ -3,6 +3,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
 import { NewsletterForm } from '@/components/forms/newsletter-form';
 import { LogoIcon } from '@/components/ui/logo';
+import type { SiteSettings } from '@/lib/settings/service';
 
 const SocialIcon = ({ name }: { name: string }) => {
   return (
@@ -26,10 +27,15 @@ const SocialIcon = ({ name }: { name: string }) => {
   );
 };
 
-export function Footer() {
+export function Footer({ settings }: { settings?: SiteSettings }) {
   const t = useTranslations('footer');
   const locale = useLocale();
   const year = new Date().getFullYear();
+
+  const siteName = settings?.siteName || 'Velvante Solutions';
+  const email = settings?.notificationEmail || t('contact.email');
+  const phone = settings?.contactPhone || t('contact.phone');
+  const location = (locale === 'sq' ? (settings?.primaryLocationSq || settings?.primaryLocation) : settings?.primaryLocation) || t('contact.location');
 
   const socialLinks = [
     { name: 'LinkedIn', href: 'https://linkedin.com/company/velvante', label: 'LinkedIn' },
@@ -47,10 +53,10 @@ export function Footer() {
             <Link
               href={`/${locale}`}
               className="flex items-center gap-3 group mb-4"
-              aria-label="Velvante Solutions — home"
+              aria-label={`${siteName} — home`}
             >
               <LogoIcon size={52} />
-              <span className="font-black text-xl tracking-[-0.04em] text-[rgb(var(--color-text))]">Velvante Solutions</span>
+              <span className="font-black text-xl tracking-[-0.04em] text-[rgb(var(--color-text))]">{siteName}</span>
             </Link>
             <p className="text-sm text-[rgb(var(--color-text-muted))] leading-relaxed mb-6 max-w-xs">
               {t('company.description')}
@@ -58,22 +64,22 @@ export function Footer() {
 
             <div className="space-y-3 mb-6">
               <a
-                href={`mailto:${t('contact.email')}`}
+                href={`mailto:${email}`}
                 className="flex items-center gap-2.5 text-sm text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-text))] transition-colors group"
               >
                 <Mail size={14} className="text-[rgb(var(--color-accent-light))] shrink-0" />
-                {t('contact.email')}
+                {email}
               </a>
               <a
-                href={`tel:${t('contact.phone').replace(/\s/g, '')}`}
+                href={`tel:${phone.replace(/\s/g, '')}`}
                 className="flex items-center gap-2.5 text-sm text-[rgb(var(--color-text-muted))] hover:text-[rgb(var(--color-text))] transition-colors"
               >
                 <Phone size={14} className="text-[rgb(var(--color-accent-light))] shrink-0" />
-                {t('contact.phone')}
+                {phone}
               </a>
               <div className="flex items-center gap-2.5 text-sm text-[rgb(var(--color-text-muted))]">
                 <MapPin size={14} className="text-[rgb(var(--color-accent-light))] shrink-0" />
-                {t('contact.location')}
+                {location}
               </div>
             </div>
 

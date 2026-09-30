@@ -29,7 +29,9 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    await sendProjectInquiryNotification(data);
+    const { getSiteSettings } = await import('@/lib/settings/service');
+    const settings = await getSiteSettings();
+    await sendProjectInquiryNotification(data, settings.notificationEmail);
     await sendAutoReply(data.email, `${data.firstName} ${data.lastName}`, data.locale);
   } catch (emailErr) {
     console.error('[project-inquiries/route] Email error:', emailErr);

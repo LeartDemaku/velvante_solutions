@@ -98,7 +98,7 @@ async function sendViaResend(params: {
   }
 }
 
-export async function sendContactNotification(data: ContactInput): Promise<{ success: boolean; messageId?: string }> {
+export async function sendContactNotification(data: ContactInput, overrideTargetEmail?: string): Promise<{ success: boolean; messageId?: string }> {
   const cleanName = sanitizeText(data.name);
   const cleanEmail = sanitizeText(data.email);
   const cleanCompany = sanitizeText(data.company) || '—';
@@ -192,9 +192,11 @@ export async function sendContactNotification(data: ContactInput): Promise<{ suc
 
   const text = `New Contact Submission:\nName: ${data.name}\nEmail: ${data.email}\nPhone: ${data.phone || 'N/A'}\nCompany: ${data.company || 'N/A'}\nService: ${data.service || 'N/A'}\n\nMessage:\n${data.message}`;
 
+  const recipient = overrideTargetEmail || process.env.CONTACT_EMAIL || 'velvantesolutions@outlook.com';
+
   if (process.env.RESEND_API_KEY) {
     const resendResult = await sendViaResend({
-      to: 'velvantesolutions@outlook.com',
+      to: recipient,
       replyTo: data.email,
       subject,
       html,
@@ -214,7 +216,7 @@ export async function sendContactNotification(data: ContactInput): Promise<{ suc
     const transporter = createTransporter(config);
     const info = await transporter.sendMail({
       from: config.from,
-      to: config.targetEmail,
+      to: recipient,
       replyTo: data.email,
       subject,
       html,
@@ -226,7 +228,7 @@ export async function sendContactNotification(data: ContactInput): Promise<{ suc
   }
 }
 
-export async function sendProjectInquiryNotification(data: ProjectInquiryInput): Promise<{ success: boolean; messageId?: string }> {
+export async function sendProjectInquiryNotification(data: ProjectInquiryInput, overrideTargetEmail?: string): Promise<{ success: boolean; messageId?: string }> {
   const fullName = `${sanitizeText(data.firstName)} ${sanitizeText(data.lastName)}`.trim();
   const cleanEmail = sanitizeText(data.email);
   const cleanPhone = sanitizeText(data.phone) || '—';
@@ -335,9 +337,11 @@ export async function sendProjectInquiryNotification(data: ProjectInquiryInput):
 
   const text = `New Project Request:\nClient: ${fullName}\nEmail: ${data.email}\nPhone: ${data.phone || 'N/A'}\nType: ${data.projectType}\nBudget: ${cleanBudget}\nTimeline: ${cleanTimeline}\n\nDescription:\n${data.description || 'N/A'}`;
 
+  const recipient = overrideTargetEmail || process.env.CONTACT_EMAIL || 'velvantesolutions@outlook.com';
+
   if (process.env.RESEND_API_KEY) {
     const resendResult = await sendViaResend({
-      to: 'velvantesolutions@outlook.com',
+      to: recipient,
       replyTo: data.email,
       subject,
       html,
@@ -357,7 +361,7 @@ export async function sendProjectInquiryNotification(data: ProjectInquiryInput):
     const transporter = createTransporter(config);
     const info = await transporter.sendMail({
       from: config.from,
-      to: config.targetEmail,
+      to: recipient,
       replyTo: data.email,
       subject,
       html,
@@ -462,14 +466,15 @@ export async function verifySmtpConnection(): Promise<{ ok: boolean; error?: str
   }
 }
 
-export async function sendTestEmail(): Promise<{ ok: boolean; messageId?: string; error?: string }> {
+export async function sendTestEmail(toEmail?: string): Promise<{ ok: boolean; messageId?: string; error?: string }> {
+  const recipient = toEmail || 'velvantesolutions@outlook.com';
   const subject = '✅ Velvante Solutions — Test i Suksesshëm i Konfigurimit të Email-it';
   const html = `
     <div style="font-family: Arial, sans-serif; max-width: 500px; padding: 20px; background: #0f0f1a; color: #ffffff; border: 1px solid #1e1e32; border-radius: 12px;">
       <h2 style="color: #4ade80; margin: 0 0 10px 0;">Konfigurimi i Email-it Funksionon me Sukses!</h2>
-      <p style="color: #cbd5e1; font-size: 14px; line-height: 1.5;">Ky është një email prove nga sistemi i <strong>Velvante Solutions</strong> drejtuar tek <strong>velvantesolutions@outlook.com</strong>.</p>
+      <p style="color: #cbd5e1; font-size: 14px; line-height: 1.5;">Ky është një email prove nga sistemi i <strong>Velvante Solutions</strong> drejtuar tek <strong>${recipient}</strong>.</p>
       <div style="background: #16162a; padding: 12px; border-radius: 8px; font-family: monospace; font-size: 12px; color: #a5b4fc; margin-top: 15px;">
-        Marrësi: velvantesolutions@outlook.com<br/>
+        Marrësi: ${recipient}<br/>
         Shërbimi: Resend Infrastructure<br/>
         Koha: ${new Date().toISOString()}
       </div>
@@ -478,10 +483,10 @@ export async function sendTestEmail(): Promise<{ ok: boolean; messageId?: string
 
   if (process.env.RESEND_API_KEY) {
     const resendResult = await sendViaResend({
-      to: 'velvantesolutions@outlook.com',
+      to: recipient,
       subject,
       html,
-      text: 'Velvante Solutions — Test i Suksesshëm i Konfigurimit të Email-it tek velvantesolutions@outlook.com',
+      text: `Velvante Solutions — Test i Suksesshëm i Konfigurimit të Email-it tek ${recipient}`,
     });
     return resendResult;
   }
@@ -495,7 +500,7 @@ export async function sendTestEmail(): Promise<{ ok: boolean; messageId?: string
     const transporter = createTransporter(config);
     const info = await transporter.sendMail({
       from: config.from,
-      to: config.targetEmail,
+      to: recipient,
       subject,
       html,
     });

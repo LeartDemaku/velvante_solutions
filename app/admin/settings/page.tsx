@@ -1,23 +1,84 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Save, Check, Mail, Send, AlertCircle, CheckCircle2 } from 'lucide-react';
-import { useState } from 'react';
+import { Save, Check, Mail, Send, AlertCircle, CheckCircle2, Loader2, RefreshCw } from 'lucide-react';
+
+interface SettingsForm {
+  siteName: string;
+  notificationEmail: string;
+  contactPhone: string;
+  primaryLocation: string;
+}
 
 export default function AdminSettingsPage() {
-  const [saved, setSaved] = useState(false);
+  const [form, setForm] = useState<SettingsForm>({
+    siteName: 'Velvante Solutions',
+    notificationEmail: 'velvantesolutions@outlook.com',
+    contactPhone: '+383 45 319 619',
+    primaryLocation: 'Pristina, Kosovo',
+  });
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [saveError, setSaveError] = useState('');
   const [testingEmail, setTestingEmail] = useState(false);
   const [testResult, setTestResult] = useState<{ status: 'idle' | 'success' | 'error'; message: string }>({
     status: 'idle',
     message: '',
   });
 
-  function handleSave(e: React.FormEvent) {
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/admin/settings');
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.data) {
+            setForm({
+              siteName: data.data.siteName || 'Velvante Solutions',
+              notificationEmail: data.data.notificationEmail || 'velvantesolutions@outlook.com',
+              contactPhone: data.data.contactPhone || '+383 45 319 619',
+              primaryLocation: data.data.primaryLocation || 'Pristina, Kosovo',
+            });
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load settings:', err);
+      } finally {
+        setInitialLoading(false);
+      }
+    }
+    loadSettings();
+  }, []);
+
+  async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+    setSaving(true);
+    setSaveError('');
+    setSaveSuccess(false);
+
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setSaveSuccess(true);
+        setTimeout(() => setSaveSuccess(false), 4000);
+      } else {
+        setSaveError(data.error?.message || 'Dështoi ruajtja e konfigurimeve.');
+      }
+    } catch (err: any) {
+      setSaveError(err?.message || 'Gabim rrjeti gjatë ruajtjes së konfigurimeve.');
+    } finally {
+      setSaving(false);
+    }
   }
 
   async function handleTestEmail() {
@@ -31,7 +92,7 @@ export default function AdminSettingsPage() {
       if (res.ok) {
         setTestResult({
           status: 'success',
-          message: data.data?.message || 'Test email dispatched successfully to velvantesolutions@outlook.com',
+          message: data.data?.message || `Test email dispatched successfully to ${form.notificationEmail}`,
         });
       } else {
         setTestResult({
@@ -51,21 +112,75 @@ export default function AdminSettingsPage() {
 
   return (
     <div className="space-y-8 max-w-2xl">
-      <div>
-        <h1 className="text-2xl font-bold text-[rgb(var(--color-text))]">System Settings</h1>
-        <p className="text-xs text-[rgb(var(--color-text-muted))]">Global website configuration and email notification settings.</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-[rgb(var(--color-text))]">System Settings</h1>
+          <p className="text-xs text-[rgb(var(--color-text-muted))]">Global website configuration and email notification settings.</p>
+        </div>
+        {initialLoading && (
+          <div className="flex items-center gap-2 text-xs font-mono text-[rgb(var(--color-text-muted))]">
+            <Loader2 size={14} className="animate-spin" />
+            Duke ngarkuar...
+          </div>
+        )}
       </div>
 
       <Card className="p-6 bg-[rgb(var(--color-surface))] space-y-6">
         <form onSubmit={handleSave} className="space-y-4">
-          <Input label="Site Name" defaultValue="Velvante Solutions" />
-          <Input label="Notification Email" defaultValue="velvantesolutions@outlook.com" />
-          <Input label="Contact Phone Number" defaultValue="+383 44 000 000" />
-          <Input label="Primary Location" defaultValue="Pristina, Kosovo" />
+          <Input
+            label="Site Name"
+            value={form.siteName}
+            onChange={(e) => setForm((prev) => ({ ...prev, siteName: e.target.value }))}
+            disabled={initialLoading || saving}
+            hint="Emri zyrtar i brendit që shfaqet në titull dhe fundfaqe."
+          />
+          <Input
+            label="Notification Email"
+            type="email"
+            value={form.notificationEmail}
+            onChange={(e) => setForm((prev) => ({ ...prev, notificationEmail: e.target.value }))}
+            disabled={initialLoading || saving}
+            hint="Email-i ku vijnë të gjitha njoftimet nga formularët e kontaktit dhe inquiries."
+          />
+          <Input
+            label="Contact Phone Number"
+            value={form.contactPhone}
+            onChange={(e) => setForm((prev) => ({ ...prev, contactPhone: e.target.value }))}
+            disabled={initialLoading || saving}
+            placeholder="+383 45 319 619"
+            hint="Ky numër shfaqet në të gjithë uebsajtin (faqja Contact, Footer, etj.) dhe hapet direkt me klikim."
+          />
+          <Input
+            label="Primary Location"
+            value={form.primaryLocation}
+            onChange={(e) => setForm((prev) => ({ ...prev, primaryLocation: e.target.value }))}
+            disabled={initialLoading || saving}
+            placeholder="Pristina, Kosovo"
+            hint="Vendndodhja kryesore e zyrës që shfaqet në uebsajt."
+          />
+
+          {saveSuccess && (
+            <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center gap-3 text-emerald-400 text-xs font-medium">
+              <CheckCircle2 size={16} className="shrink-0" />
+              <span>Konfigurimet u ruajtën me sukses dhe u aplikuan në të gjithë uebsajtin!</span>
+            </div>
+          )}
+
+          {saveError && (
+            <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/25 flex items-center gap-3 text-red-400 text-xs font-medium">
+              <AlertCircle size={16} className="shrink-0" />
+              <span>{saveError}</span>
+            </div>
+          )}
 
           <div className="pt-4 border-t border-[rgb(var(--color-border))] flex items-center gap-3">
-            <Button type="submit" leftIcon={saved ? <Check size={16} /> : <Save size={16} />}>
-              {saved ? 'Settings Saved!' : 'Save Settings'}
+            <Button
+              type="submit"
+              disabled={initialLoading || saving}
+              loading={saving}
+              leftIcon={saveSuccess ? <Check size={16} /> : <Save size={16} />}
+            >
+              {saveSuccess ? 'Saved!' : 'Save Settings'}
             </Button>
           </div>
         </form>
@@ -78,14 +193,14 @@ export default function AdminSettingsPage() {
           </div>
           <div>
             <h2 className="text-base font-bold text-[rgb(var(--color-text))]">Email & SMTP Diagnostics</h2>
-            <p className="text-xs text-[rgb(var(--color-text-muted))]">Verify live delivery to velvantesolutions@outlook.com</p>
+            <p className="text-xs text-[rgb(var(--color-text-muted))]">Verify live delivery to {form.notificationEmail}</p>
           </div>
         </div>
 
         <div className="p-4 rounded-xl bg-[rgb(var(--color-surface-elevated))] border border-[rgb(var(--color-border))] space-y-2 text-xs font-mono">
           <div className="flex justify-between text-[rgb(var(--color-text-muted))]">
             <span>Target Inbox:</span>
-            <span className="text-[rgb(var(--color-text))] font-bold">velvantesolutions@outlook.com</span>
+            <span className="text-[rgb(var(--color-text))] font-bold">{form.notificationEmail}</span>
           </div>
           <div className="flex justify-between text-[rgb(var(--color-text-muted))]">
             <span>SMTP Server:</span>
@@ -119,7 +234,7 @@ export default function AdminSettingsPage() {
             onClick={handleTestEmail}
             rightIcon={<Send size={15} />}
           >
-            Send Test Email to velvantesolutions@outlook.com
+            Send Test Email to {form.notificationEmail}
           </Button>
         </div>
       </Card>
