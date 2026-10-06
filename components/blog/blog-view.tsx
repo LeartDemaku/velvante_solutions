@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, Calendar, ArrowRight, BookOpen } from 'lucide-react';
+import { Clock, ArrowRight, BookOpen, Sparkles } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { NewsletterForm } from '@/components/forms/newsletter-form';
 
@@ -23,6 +23,8 @@ interface BlogViewProps {
   posts: BlogPostItem[];
   locale: string;
 }
+
+const projectSlugPrefixes = ['workpulse', 'avana', 'vantalyra', 'korea-pure-beauty'];
 
 export function BlogView({ posts, locale }: BlogViewProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -66,77 +68,88 @@ export function BlogView({ posts, locale }: BlogViewProps) {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch"
         >
           <AnimatePresence mode="popLayout">
-            {filteredPosts.map((post, idx) => (
-              <motion.div
-                key={post.id}
-                layout
-                initial={false}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.96, y: 20 }}
-                transition={{ duration: 0.3 }}
-                className="h-full flex flex-col"
-              >
-                <Link
-                  href={`/${locale}/blog/${post.slug}`}
-                  className="group relative flex flex-col justify-between h-full rounded-3xl bg-[rgb(var(--color-surface)/0.65)] backdrop-blur-xl border border-[rgb(var(--color-border)/0.8)] hover:border-[rgb(var(--color-accent)/0.5)] transition-all duration-300 shadow-sm hover:shadow-[0_16px_40px_rgba(99,102,241,0.15)] hover:-translate-y-1.5 overflow-hidden"
+            {filteredPosts.map((post) => {
+              const isProjectPost = projectSlugPrefixes.some((prefix) => post.slug.startsWith(prefix));
+
+              return (
+                <motion.div
+                  key={post.id}
+                  layout
+                  initial={false}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.96, y: 20 }}
+                  transition={{ duration: 0.3 }}
+                  className="h-full flex flex-col"
                 >
-                  <div className="relative h-56 w-full overflow-hidden bg-[rgb(var(--color-surface-elevated))]">
-                    <img
-                      src={post.coverImage}
-                      alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[rgb(var(--color-surface))] via-transparent to-black/30" />
+                  <Link
+                    href={`/${locale}/blog/${post.slug}`}
+                    className="group relative flex flex-col justify-between h-full rounded-3xl bg-[rgb(var(--color-surface)/0.65)] backdrop-blur-xl border border-[rgb(var(--color-border)/0.8)] hover:border-[rgb(var(--color-accent)/0.5)] transition-all duration-300 shadow-sm hover:shadow-[0_16px_40px_rgba(99,102,241,0.15)] hover:-translate-y-1.5 overflow-hidden"
+                  >
+                    <div className="relative h-56 w-full overflow-hidden bg-zinc-950">
+                      <img
+                        src={post.coverImage}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[rgb(var(--color-surface))] via-transparent to-black/40" />
 
-                    <div className="absolute top-4 left-4">
-                      <span className="bg-black/60 backdrop-blur-md px-3.5 py-1 rounded-full text-[11px] font-semibold text-white uppercase tracking-wider border border-white/10">
-                        {post.categoryName}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-7 flex-1 flex flex-col justify-between space-y-6">
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-3 text-xs text-[rgb(var(--color-text-subtle))] font-mono">
-                        <span className="flex items-center gap-1.5 text-[rgb(var(--color-accent-light))]">
-                          <Clock size={13} /> {post.readingTime} {locale === 'sq' ? 'min lexim' : 'min read'}
+                      <div className="absolute top-4 left-4 right-4 flex items-center justify-between gap-2">
+                        <span className="bg-black/60 backdrop-blur-md px-3.5 py-1 rounded-full text-[11px] font-semibold text-white uppercase tracking-wider border border-white/10">
+                          {post.categoryName}
                         </span>
-                        {post.publishedAt && (
-                          <span className="flex items-center gap-1">
-                            • {formatDate(post.publishedAt, locale)}
+
+                        {isProjectPost && (
+                          <span className="bg-[rgb(var(--color-accent))] text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1">
+                            <Sparkles size={11} />
+                            {locale === 'sq' ? 'Projekt' : 'Case Study'}
                           </span>
                         )}
                       </div>
-
-                      <h2 className="text-xl sm:text-2xl font-bold text-[rgb(var(--color-text))] group-hover:text-[rgb(var(--color-accent-light))] transition-colors leading-snug">
-                        {post.title}
-                      </h2>
-
-                      <p className="text-sm text-[rgb(var(--color-text-muted))] leading-relaxed line-clamp-2">
-                        {post.excerpt}
-                      </p>
                     </div>
 
-                    <div className="pt-5 border-t border-[rgb(var(--color-border-subtle))] flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-full bg-[rgb(var(--color-accent)/0.2)] text-[rgb(var(--color-accent-light))] border border-[rgb(var(--color-accent)/0.4)] flex items-center justify-center text-xs font-bold font-mono">
-                          {post.authorName[0]}
+                    <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-6">
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3 text-xs text-[rgb(var(--color-text-subtle))] font-mono">
+                          <span className="flex items-center gap-1.5 text-[rgb(var(--color-accent-light))]">
+                            <Clock size={13} /> {post.readingTime} {locale === 'sq' ? 'min lexim' : 'min read'}
+                          </span>
+                          {post.publishedAt && (
+                            <span className="flex items-center gap-1">
+                              • {formatDate(post.publishedAt, locale)}
+                            </span>
+                          )}
                         </div>
-                        <span className="text-xs font-medium text-[rgb(var(--color-text-subtle))]">
-                          {post.authorName}
-                        </span>
+
+                        <h2 className="text-xl sm:text-2xl font-bold text-[rgb(var(--color-text))] group-hover:text-[rgb(var(--color-accent-light))] transition-colors leading-snug line-clamp-2">
+                          {post.title}
+                        </h2>
+
+                        <p className="text-sm text-[rgb(var(--color-text-muted))] leading-relaxed line-clamp-2">
+                          {post.excerpt}
+                        </p>
                       </div>
 
-                      <span className="text-xs font-semibold text-[rgb(var(--color-accent-light))] flex items-center gap-1 group-hover:gap-2 transition-all">
-                        {locale === 'sq' ? 'Lexo' : 'Read'}
-                        <ArrowRight size={13} />
-                      </span>
+                      <div className="pt-5 border-t border-[rgb(var(--color-border-subtle))] flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-7 h-7 rounded-full bg-[rgb(var(--color-accent)/0.2)] text-[rgb(var(--color-accent-light))] border border-[rgb(var(--color-accent)/0.4)] flex items-center justify-center text-xs font-bold font-mono">
+                            {post.authorName[0]}
+                          </div>
+                          <span className="text-xs font-medium text-[rgb(var(--color-text-subtle))]">
+                            {post.authorName}
+                          </span>
+                        </div>
+
+                        <span className="text-xs font-semibold text-[rgb(var(--color-accent-light))] flex items-center gap-1 group-hover:gap-2 transition-all">
+                          {locale === 'sq' ? 'Lexo' : 'Read'}
+                          <ArrowRight size={13} />
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
+                  </Link>
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         </motion.div>
       )}
