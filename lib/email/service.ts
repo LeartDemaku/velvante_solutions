@@ -43,7 +43,6 @@ function createTransporter(config: EmailConfig) {
       pass: config.auth.pass,
     },
     tls: {
-      ciphers: 'SSLv3',
       rejectUnauthorized: false,
     },
   });
@@ -71,6 +70,8 @@ async function sendViaResend(params: {
     return { ok: false, error: 'RESEND_API_KEY is not set' };
   }
 
+  const fromAddress = process.env.RESEND_FROM || 'Velvante Solutions <onboarding@resend.dev>';
+
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -79,9 +80,9 @@ async function sendViaResend(params: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Velvante Solutions <onboarding@resend.dev>',
+        from: fromAddress,
         to: Array.isArray(params.to) ? params.to : [params.to],
-        reply_to: params.replyTo,
+        reply_to: params.replyTo || process.env.CONTACT_EMAIL || 'velvantesolutions@outlook.com',
         subject: params.subject,
         html: params.html,
         text: params.text,
@@ -97,6 +98,7 @@ async function sendViaResend(params: {
     return { ok: false, error: err?.message || 'Resend network error' };
   }
 }
+
 
 export async function sendContactNotification(data: ContactInput, overrideTargetEmail?: string): Promise<{ success: boolean; messageId?: string }> {
   const cleanName = sanitizeText(data.name);
@@ -374,40 +376,50 @@ export async function sendProjectInquiryNotification(data: ProjectInquiryInput, 
 }
 
 export async function sendAutoReply(email: string, name: string, locale: string = 'sq'): Promise<void> {
-  const cleanName = sanitizeText(name);
-  const isSq = locale === 'sq';
+  const cleanName = sanitizeText(name) || 'Klient';
+  const cleanEmail = sanitizeText(email);
+  if (!cleanEmail) return;
 
-  const subject = isSq
-    ? 'Kemi marrë mesazhin tuaj — Velvante Solutions'
-    : 'We received your message — Velvante Solutions';
-
-  const messageBody = isSq
-    ? `Faleminderit që kontaktuat <strong>Velvante Solutions</strong>. Kemi marrë me sukses kërkesën tuaj dhe inxhinierët tanë do t'ju përgjigjen me një vlerësim të përshtatur brenda 24 orëve të ardhshme.`
-    : `Thank you for contacting <strong>Velvante Solutions</strong>. We have successfully received your inquiry and our team will get back to you with a tailored assessment within the next 24 hours.`;
+  const subject = 'Konfirmim: Kemi marrë mesazhin tuaj / Confirmation: We received your inquiry — Velvante Solutions';
 
   const html = `
     <!DOCTYPE html>
     <html>
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      </head>
       <body style="margin: 0; padding: 0; background-color: #070710; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #f0f0f8;">
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="padding: 40px 15px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="padding: 35px 15px; background-color: #070710;">
           <tr>
             <td align="center">
-              <table role="presentation" width="560" cellspacing="0" cellpadding="0" style="background-color: #0f0f1a; border: 1px solid #1e1e32; border-radius: 16px; overflow: hidden;">
+              <table role="presentation" width="580" cellspacing="0" cellpadding="0" style="background-color: #0f0f1a; border: 1px solid #1e1e32; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
                 <tr>
-                  <td style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); padding: 24px; text-align: center;">
-                    <h1 style="margin: 0; font-size: 22px; font-weight: 800; color: #ffffff;">Velvante Solutions</h1>
+                  <td style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); padding: 26px 30px; text-align: center; border-bottom: 1px solid #3730a3;">
+                    <h1 style="margin: 0; font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em;">Velvante Solutions</h1>
+                    <p style="margin: 4px 0 0 0; font-size: 12px; color: #a5b4fc; font-family: monospace; text-transform: uppercase; letter-spacing: 0.1em;">Konfirmim Zyrtar / Official Confirmation</p>
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding: 30px; font-size: 15px; line-height: 1.6; color: #cbd5e1;">
-                    <h2 style="margin: 0 0 16px 0; color: #f8fafc; font-size: 18px;">${isSq ? 'Përshëndetje' : 'Hello'}, ${cleanName}</h2>
-                    <p style="margin: 0 0 20px 0;">${messageBody}</p>
-                    <p style="margin: 0; color: #94a3b8; font-size: 13px;">— ${isSq ? 'Ekipi i Velvante Solutions' : 'The Velvante Solutions Team'}</p>
+                  <td style="padding: 32px 30px; font-size: 14px; line-height: 1.6; color: #cbd5e1;">
+                    <h2 style="margin: 0 0 20px 0; color: #f8fafc; font-size: 17px; font-weight: 700;">Përshëndetje / Hello, ${cleanName}</h2>
+                    
+                    <div style="background-color: #141426; border-left: 3px solid #6366f1; border-radius: 0 10px 10px 0; padding: 16px 20px; margin-bottom: 18px;">
+                      <p style="margin: 0 0 6px 0; font-size: 11px; font-family: monospace; color: #818cf8; text-transform: uppercase; font-weight: 700; letter-spacing: 0.08em;">Shqip</p>
+                      <p style="margin: 0; color: #e2e8f0; font-size: 14px; line-height: 1.6;">Faleminderit që kontaktuat <strong>Velvante Solutions</strong>. Kemi pranuar me sukses kërkesën tuaj. Ekipi ynë inxhinierik po e shqyrton me kujdes dhe do t'ju kontaktojë brenda 24 orëve të ardhshme me hapat e mëtejmë.</p>
+                    </div>
+
+                    <div style="background-color: #141426; border-left: 3px solid #38bdf8; border-radius: 0 10px 10px 0; padding: 16px 20px; margin-bottom: 24px;">
+                      <p style="margin: 0 0 6px 0; font-size: 11px; font-family: monospace; color: #38bdf8; text-transform: uppercase; font-weight: 700; letter-spacing: 0.08em;">English</p>
+                      <p style="margin: 0; color: #cbd5e1; font-size: 14px; line-height: 1.6;">Thank you for contacting <strong>Velvante Solutions</strong>. We have successfully received your inquiry. Our engineering team is reviewing it and will get back to you within the next 24 hours with details and next steps.</p>
+                    </div>
+
+                    <p style="margin: 0; color: #94a3b8; font-size: 13px;">— Ekipi i Velvante Solutions / The Velvante Solutions Team</p>
                   </td>
                 </tr>
                 <tr>
                   <td style="background-color: #0b0b14; padding: 16px; text-align: center; border-top: 1px solid #1a1a2e; font-size: 12px; color: #64748b; font-family: monospace;">
-                    velvantesolutions@outlook.com
+                    Velvante Solutions • velvantesolutions@outlook.com
                   </td>
                 </tr>
               </table>
@@ -418,15 +430,18 @@ export async function sendAutoReply(email: string, name: string, locale: string 
     </html>
   `;
 
+  const text = `Përshëndetje / Hello ${cleanName},\n\n[SQ] Faleminderit që kontaktuat Velvante Solutions. Kemi pranuar me sukses kërkesën tuaj dhe ekipi ynë do t'ju përgjigjet brenda 24 orëve.\n\n[EN] Thank you for reaching out to Velvante Solutions. We have successfully received your inquiry and our team will get back to you within 24 hours.\n\n— Velvante Solutions\nvelvantesolutions@outlook.com`;
+
   if (process.env.RESEND_API_KEY) {
     try {
-      await sendViaResend({
-        to: email,
+      const resendRes = await sendViaResend({
+        to: cleanEmail,
+        replyTo: process.env.CONTACT_EMAIL || 'velvantesolutions@outlook.com',
         subject,
         html,
-        text: `${isSq ? 'Përshëndetje' : 'Hello'} ${name},\n\n${isSq ? 'Kemi marrë me sukses mesazhin tuaj dhe do t\'ju përgjigjemi brenda 24 orëve.' : 'We have received your message and will respond within 24 hours.'}\n\n— Velvante Solutions`,
+        text,
       });
-      return;
+      if (resendRes.ok) return;
     } catch {
     }
   }
@@ -438,10 +453,11 @@ export async function sendAutoReply(email: string, name: string, locale: string 
     const transporter = createTransporter(config);
     await transporter.sendMail({
       from: config.from,
-      to: email,
+      to: cleanEmail,
+      replyTo: config.targetEmail,
       subject,
       html,
-      text: `${isSq ? 'Përshëndetje' : 'Hello'} ${name},\n\n${isSq ? 'Kemi marrë me sukses mesazhin tuaj dhe do t\'ju përgjigjemi brenda 24 orëve.' : 'We have received your message and will respond within 24 hours.'}\n\n— Velvante Solutions`,
+      text,
     });
   } catch {
   }
